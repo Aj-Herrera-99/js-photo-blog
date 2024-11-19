@@ -1,0 +1,39 @@
+.debug {
+    border: 3px solid red;
+}
+
+.debug2 {
+    border: 3px solid blue;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.margin-inline-auto {
+    margin-inline: auto;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.content-center {
+    justify-content: center;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}

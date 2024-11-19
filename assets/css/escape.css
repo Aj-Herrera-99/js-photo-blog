@@ -1,11 +1,11 @@
 #escape {
-    background: none;
     position: fixed;
     top: -40px;
     left: 50%;
+    transform: translateX(-50%);
     height: fit-content;
     width: fit-content;
-    transform: translateX(-50%);
+    background: transparent;
     border-color: white;
     color: white;
     padding: 5px 12px;

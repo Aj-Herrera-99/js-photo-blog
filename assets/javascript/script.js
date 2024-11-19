@@ -16,7 +16,7 @@ const $notesWrapper = document.querySelector(notesWrapperClass);
 // other variables
 let isModal = false;
 let escTimeout;
-const NOTES_COUNT = 20;
+const NOTES_COUNT = 19;
 // http request with axios, for generating notes
 // URI
 const url = "https://jsonplaceholder.typicode.com/";
@@ -63,7 +63,7 @@ function generatesNotes(parentElement, data, dataLen) {
         template += `<figure class="note d-flex flex-wrap">
                     <div class="pin"><img src="./assets/img/pin.svg" alt="pin"></div>
                     <img class="note-image" src="${data[i].url}" alt="img">
-                    <figcaption class="d-flex items-center">${data[i].title}</figcaption>
+                    <figcaption class="d-flex items-center text-capitalize">${data[i].title}</figcaption>
                 </figure>   `;
     }
     parentElement.innerHTML = template;

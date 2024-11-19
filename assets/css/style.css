@@ -1,3 +1,4 @@
+/* resets */
 *,
 *::before,
 *::after {
@@ -23,7 +24,6 @@ html {
 body {
     width: 100%;
     height: 100vh;
-    background-color: green;
     font-family: "Edu TAS Beginner", cursive;
     font-optical-sizing: auto;
     font-weight: normal;
@@ -39,7 +39,6 @@ header {
     left: 0;
     width: 100%;
     height: var(--header-height);
-    background-color: red;
     background-image: url("../img/wall.png");
     background-position: center;
     background-size: contain;
@@ -88,12 +87,6 @@ main {
     z-index: 99;
 }
 
-/* effect on siblings if one of them is on hover */
-/* .note:has(~ :hover),
-.note:hover ~ .note {
-    scale: 0.95;
-} */
-
 .note img:not(.pin img) {
     width: 100%;
     background: black;
@@ -112,39 +105,16 @@ main {
     overflow: hidden;
 }
 
+.note figcaption::first-letter {
+    text-transform: capitalize;
+}
+
 .pin {
     width: 15%;
     position: absolute;
     top: 0;
     left: 50%;
     transform: translate(-50%, -50%);
-}
-
-@media screen and (min-width: 400px) {
-    h1 {
-        font-size: 4rem;
-    }
-}
-
-@media screen and (min-width: 576px) {
-    .note {
-        /* 40px = 10px + 10px + 10px + 10px di .box margin */
-        width: calc((100% - (4 * var(--note-margin-inline))) / 2);
-        font-size: 1.3rem;
-        margin-block: 20px;
-    }
-}
-
-@media screen and (min-width: 992px) {
-    .notes-wrapper {
-        max-width: 900px;
-    }
-
-    .note {
-        /* 60px = (10px * 6) di .box margin */
-        width: calc((100% - (6 * var(--note-margin-inline))) / 3);
-        font-size: 1.5rem;
-    }
 }
 
 /** TRIGGERS */
@@ -172,55 +142,57 @@ main {
     z-index: 10000;
 }
 
+/************  MEDIA QUERIES  **********************  */
+@media screen and (min-width: 400px) {
+    h1 {
+        font-size: 4rem;
+    }
+}
+
+@media screen and (min-width: 576px) {
+    .note {
+        /* 40px = 10px + 10px + 10px + 10px di .box margin */
+        width: calc((100% - (4 * var(--note-margin-inline))) / 2);
+        font-size: 1.3rem;
+        margin-block: 20px;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .notes-wrapper {
+        max-width: 900px;
+    }
+
+    .note {
+        /* 60px = (10px * 6) di .box margin */
+        width: calc((100% - (6 * var(--note-margin-inline))) / 3);
+        font-size: 1.5rem;
+    }
+}
+
 @media screen and (orientation: portrait) {
     .modal {
         width: 50vw;
     }
 }
-@media screen and (orientation: landscape) {
+
+@media screen and (max-width: 1000px) and (orientation: landscape) {
+    header {
+        position: absolute;
+    }
+
+    .notes-wrapper {
+        width: 70%;
+    }
+
     .modal {
-        width: 30vw;
+        top: 45%;
+        width: 27vw;
     }
 }
 
-
-/** UTILITIES */
-.debug {
-    border: 3px solid red;
-}
-
-.debug2 {
-    border: 3px solid blue;
-}
-
-.text-center {
-    text-align: center;
-}
-
-.margin-inline-auto {
-    margin-inline: auto;
-}
-
-.d-flex {
-    display: flex;
-}
-
-.flex-wrap {
-    flex-wrap: wrap;
-}
-
-.content-center {
-    justify-content: center;
-}
-
-.items-center {
-    align-items: center;
-}
-
-.flex-col {
-    flex-direction: column;
-}
-
-.overflow-hidden {
-    overflow: hidden;
+@media screen and (min-width: 1000px) and (orientation: landscape) {
+    .modal {
+        width: 40vw;
+    }
 }
