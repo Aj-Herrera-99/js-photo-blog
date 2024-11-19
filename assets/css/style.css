@@ -84,7 +84,7 @@ main {
     scale: 1.1;
     translate: 10px -10px;
     rotate: 5deg;
-    z-index: 99;
+    z-index: 50;
 }
 
 .note img:not(.pin img) {
@@ -176,7 +176,7 @@ main {
     }
 }
 
-@media screen and (max-width: 1000px) and (orientation: landscape) {
+@media screen and (max-width: 768px) and (orientation: landscape) {
     header {
         position: absolute;
     }
@@ -193,6 +193,6 @@ main {
 
 @media screen and (max-width: 1200px) and (orientation: landscape) {
     .modal {
-        width: 40vw;
+        width: 35vw;
     }
 }
