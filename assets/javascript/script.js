@@ -3,6 +3,8 @@
 const noteClass = ".note";
 const noteImageClass = ".note-image";
 const figcaptionTag = "figcaption";
+// css classes
+const layover = "layover";
 // DOM elements selection
 const $notes = document.querySelectorAll(noteClass);
 const $noteImages = document.querySelectorAll(noteImageClass);
@@ -30,9 +32,11 @@ axios
     });
 
 //* EVENT LISTENERS
-$noteImages.forEach((note) => note.addEventListener("click", handleNoteClick));
+$notes.forEach((note) => note.addEventListener("click", handleNoteClick));
 
 //* EVENT HANDLERS
-function handleNoteClick(){
-    console.log(this);
+function handleNoteClick(e){
+    console.log(this.closest(".note"));
+    document.body.classList.add(layover);
+    this.closest(noteClass).classList.add("modal");
 }

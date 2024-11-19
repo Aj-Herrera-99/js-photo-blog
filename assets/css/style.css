@@ -39,7 +39,7 @@ header {
     background-image: url("../img/wall.png");
     background-position: center;
     background-size: contain;
-    z-index: 1000;
+    z-index: 100;
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.6);
 }
 
@@ -81,7 +81,7 @@ main {
     scale: 1.1;
     translate: 10px -10px;
     rotate: 5deg;
-    z-index: 100;
+    z-index: 10000;
 }
 
 /* effect on siblings if one of them is on hover */
@@ -144,11 +144,37 @@ main {
 }
 
 /** TRIGGERS */
-.after::after {
+.layover::after {
+    content: "";
     position: absolute;
-    background: #000;
+    background: #0000007c;
     inset: 0;
-    
+    z-index: 1000;
+}
+
+.modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+}
+
+@media screen and (orientation: portrait) {
+    .modal {
+        width: 50vw;
+    }
+}
+@media screen and (orientation: landscape) {
+    .modal {
+        width: 30vw;
+    }
+}
+.modal:hover {
+    box-shadow: unset;
+    scale: unset;
+    translate: unset;
+    rotate: unset;
 }
 
 /** UTILITIES */
