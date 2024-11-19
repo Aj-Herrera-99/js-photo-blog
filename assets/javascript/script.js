@@ -9,6 +9,8 @@ const layover = "layover";
 const $notes = document.querySelectorAll(noteClass);
 const $noteImages = document.querySelectorAll(noteImageClass);
 const $figcaptions = document.querySelectorAll(figcaptionTag);
+// other variables
+let isModal = false;
 
 // http request with axios
 // URI
@@ -19,7 +21,7 @@ const params = {
 };
 // axios api
 axios
-    .get(url + resource, { params})
+    .get(url + resource, { params })
     .then((res) => res.data)
     .then((data) => {
         for (let i = 0; i < data.length; i++) {
@@ -34,9 +36,25 @@ axios
 //* EVENT LISTENERS
 $notes.forEach((note) => note.addEventListener("click", handleNoteClick));
 
+// escape key
+window.addEventListener("keyup", (e) => {
+    if (e.key === "Escape" && isModal) {
+        document.body.classList.remove(layover);
+        document.querySelector(".modal").classList.remove("modal");
+        isModal = false;
+    }
+});
+
 //* EVENT HANDLERS
-function handleNoteClick(e){
+function handleNoteClick(e) {
     console.log(this.closest(".note"));
-    document.body.classList.add(layover);
-    this.closest(noteClass).classList.add("modal");
+    if (!isModal) {
+        document.body.classList.add(layover);
+        this.closest(noteClass).classList.add("modal");
+        isModal = true;
+    } else {
+        document.body.classList.remove(layover);
+        this.closest(noteClass).classList.remove("modal");
+        isModal = false;
+    }
 }

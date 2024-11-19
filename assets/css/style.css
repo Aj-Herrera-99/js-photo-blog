@@ -85,10 +85,10 @@ main {
 }
 
 /* effect on siblings if one of them is on hover */
-.note:has(~ :hover),
+/* .note:has(~ :hover),
 .note:hover ~ .note {
     scale: 0.95;
-}
+} */
 
 .note img:not(.pin img) {
     width: 100%;
@@ -160,6 +160,13 @@ main {
     z-index: 10000;
 }
 
+.modal:hover {
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8);
+    scale: 0.99;
+    translate: initial;
+    rotate: initial;
+}
+
 @media screen and (orientation: portrait) {
     .modal {
         width: 50vw;
@@ -170,12 +177,7 @@ main {
         width: 30vw;
     }
 }
-.modal:hover {
-    box-shadow: unset;
-    scale: unset;
-    translate: unset;
-    rotate: unset;
-}
+
 
 /** UTILITIES */
 .debug {
