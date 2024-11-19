@@ -70,7 +70,7 @@ main {
 
 .note img:not(.pin img) {
     width: 100%;
-    background: green;
+    background: black;
     aspect-ratio: 7/8;
 }
 
