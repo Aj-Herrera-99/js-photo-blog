@@ -65,6 +65,7 @@ main {
     padding-bottom: 0;
     font-size: 1.1rem;
     position: relative;
+    cursor: pointer;
 }
 
 .note img:not(.pin img) {
@@ -102,7 +103,7 @@ main {
 
 @media screen and (min-width: 992px) {
     .notes-wrapper {
-        max-width: 1000px;
+        max-width: 900px;
     }
 
     .note {
