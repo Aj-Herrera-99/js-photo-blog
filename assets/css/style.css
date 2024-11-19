@@ -52,15 +52,26 @@ main {
 }
 
 .notes-wrapper {
-    border: 3px solid blue;
     width: 100%;
 }
 
-.box {
+.note {
+    background: red;
     width: calc(100% - 10px);
-    background: green;
-    aspect-ratio: 10/12;
+    aspect-ratio: 3/4;
     margin: 10px;
+    padding: 15px;
+}
+
+.note img {
+    width: 100%;
+    background: green;
+    aspect-ratio: 1;
+}
+
+.note figcaption {
+    width: 100%;
+    background: blue;
 }
 
 @media screen and (min-width: 400px) {
