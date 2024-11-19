@@ -18,7 +18,6 @@ axios
     .get(url + resource, { params, responseType: 'json' })
     .then((res) => res.data)
     .then((data) => {
-        console.log(data);
         for (let i = 0; i < noteImages.length; i++) {
             noteImages[i].src = data[i].url;
             figcaption[i].innerHTML = data[i].title;

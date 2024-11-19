@@ -38,6 +38,7 @@ header {
     background-image: url("../img/wall.png");
     background-position: center;
     background-size: contain;
+    z-index: 1000;
 }
 
 h1 {
