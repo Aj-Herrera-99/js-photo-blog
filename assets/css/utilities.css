@@ -33,7 +33,3 @@
 .flex-col {
     flex-direction: column;
 }
-
-.overflow-hidden {
-    overflow: hidden;
-}

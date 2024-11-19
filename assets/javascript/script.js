@@ -75,12 +75,10 @@ function triggerModalWindow(target, modalState) {
     triggerEscapeBtn(modalState);
     if (!modalState) {
         document.body.classList.add(layover);
-        document.body.classList.add(overflowHidden);
         target.classList.add("modal");
         return true;
     } else {
         document.body.classList.remove(layover);
-        document.body.classList.remove(overflowHidden);
         target.classList.remove("modal");
         return false;
     }
