@@ -48,11 +48,25 @@ main {
 }
 
 .box {
-    width: calc(100% - 10px) ;
+    width: calc(100% - 10px);
     display: inline-block;
     border: 1px solid red;
     aspect-ratio: 10/12;
     margin: 10px;
+}
+
+@media screen and (min-width: 576px) {
+    .box {
+        /* 40px = 10px + 10px + 10px + 10px di .box margin */
+        width: calc((100% - 40px) / 2); 
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .box {
+        /* 60px = (10 * 6)px di .box margin */
+        width: calc((100% - 60px) / 3); 
+    }
 }
 
 /** UTILITIES */
