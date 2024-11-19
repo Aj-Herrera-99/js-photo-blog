@@ -85,7 +85,7 @@ main {
     scale: 1.1;
     translate: 10px -10px;
     rotate: 5deg;
-    z-index: 10000;
+    z-index: 99;
 }
 
 /* effect on siblings if one of them is on hover */
@@ -169,6 +169,7 @@ main {
     scale: 0.99;
     translate: initial;
     rotate: initial;
+    z-index: 10000;
 }
 
 @media screen and (orientation: portrait) {
