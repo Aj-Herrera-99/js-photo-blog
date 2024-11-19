@@ -10,6 +10,8 @@ const overflowHidden = "overflow-hidden";
 const $notes = document.querySelectorAll(noteClass);
 const $noteImages = document.querySelectorAll(noteImageClass);
 const $figcaptions = document.querySelectorAll(figcaptionTag);
+const $escape = document.getElementById(escapeId);
+const $notesWrapper = document.querySelector(".notes-wrapper");
 // other variables
 let isModal = false;
 
@@ -18,17 +20,23 @@ let isModal = false;
 const url = "https://jsonplaceholder.typicode.com/";
 const resource = "photos";
 const params = {
-    _limit: $noteImages.length,
+    _limit: 10,
 };
+
 // axios api
 axios
     .get(url + resource, { params })
     .then((res) => res.data)
     .then((data) => {
+        let template = "";
         for (let i = 0; i < data.length; i++) {
-            $noteImages[i].src = data[i].url;
-            $figcaptions[i].innerHTML = data[i].title;
+            template += `<figure class="note d-flex flex-wrap">
+                    <div class="pin"><img src="./assets/img/pin.svg" alt="pin"></div>
+                    <img class="note-image" src="${data[i].url}" alt="img">
+                    <figcaption class="d-flex items-center">${data[i].title}</figcaption>
+                </figure>   `;
         }
+        $notesWrapper.innerHTML = template;
     })
     .catch((err) => {
         console.error(err);
