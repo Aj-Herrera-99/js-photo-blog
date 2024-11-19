@@ -1,10 +1,10 @@
 "use strict";
-// important ids classes
-const noteImageClass = "note-image";
+// important ids classes tags
+const noteImageClass = ".note-image";
 const figcaptionTag = "figcaption";
 // DOM elements selection
-const noteImages = document.querySelectorAll("." + noteImageClass);
-const figcaption = document.querySelectorAll(figcaptionTag);
+const noteImages = document.querySelectorAll(noteImageClass);
+const figcaptions = document.querySelectorAll(figcaptionTag);
 
 // http request with axios
 // URI
@@ -15,12 +15,12 @@ const params = {
 };
 // axios api
 axios
-    .get(url + resource, { params, responseType: 'json' })
+    .get(url + resource, { params})
     .then((res) => res.data)
     .then((data) => {
-        for (let i = 0; i < noteImages.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             noteImages[i].src = data[i].url;
-            figcaption[i].innerHTML = data[i].title;
+            figcaptions[i].innerHTML = data[i].title;
         }
     })
     .catch((err) => {

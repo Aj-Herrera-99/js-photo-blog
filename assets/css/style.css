@@ -13,6 +13,7 @@ img {
 
 :root {
     --header-height: 100px;
+    --note-margin-inline: 10px;
 }
 
 body {
@@ -39,6 +40,7 @@ header {
     background-position: center;
     background-size: contain;
     z-index: 1000;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.6);
 }
 
 h1 {
@@ -61,18 +63,32 @@ main {
     /* 20px = 10px + 10px di .box margin */
     width: calc(100% - 20px);
     aspect-ratio: 7/9;
-    margin: 10px;
+    margin-inline: var(--note-margin-inline);
+    margin-block: 15px;
     padding: 13px;
     padding-bottom: 0;
     font-size: 1.1rem;
     position: relative;
     cursor: pointer;
+    box-shadow: 3px 3px 8px  rgba(0, 0, 0, .8);
+    scale: .99;
+    border-radius: 3px;
+    transition: all .3s ease;
+}
+
+.note:hover{
+    box-shadow: 6px 6px 20px rgb(0, 0, 0);
+    scale: 1.1;
+    translate: -10px -7px;
+    rotate: 5deg;
+    z-index: 100;
 }
 
 .note img:not(.pin img) {
     width: 100%;
     background: black;
     aspect-ratio: 7/8;
+    border-radius: 3px;
 }
 
 .note figcaption {
@@ -97,8 +113,9 @@ main {
 @media screen and (min-width: 576px) {
     .note {
         /* 40px = 10px + 10px + 10px + 10px di .box margin */
-        width: calc((100% - 40px) / 2);
+        width: calc((100% - (4 * var(--note-margin-inline))) / 2);
         font-size: 1.3rem;
+        margin-block: 20px;
     }
 }
 
@@ -108,8 +125,8 @@ main {
     }
 
     .note {
-        /* 60px = (10 * 6)px di .box margin */
-        width: calc((100% - 60px) / 3);
+        /* 60px = (10px * 6) di .box margin */
+        width: calc((100% - (6 * var(--note-margin-inline))) / 3);
         font-size: 1.5rem;
     }
 }
