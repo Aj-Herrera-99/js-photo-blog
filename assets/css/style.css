@@ -12,7 +12,7 @@ img {
 }
 
 :root {
-    --header-height: 125px;
+    --header-height: 100px;
 }
 
 body {
@@ -32,27 +32,41 @@ header {
     width: 100%;
     height: var(--header-height);
     background-color: red;
+    background-image: url("../img/wall.png");
+    background-position: center;
+    background-size: contain;
+}
+
+h1 {
+    text-transform: uppercase;
+    font-size: 3.5rem;
 }
 
 main {
     margin-top: var(--header-height);
     min-height: calc(100% - var(--header-height));
-    padding: 100px;
-    overflow: hidden;
+    padding: 80px;
+    background-image: url("../img/cork.png");
+    background-position: center;
+    background-size: contain;
 }
 
 .notes-wrapper {
     border: 3px solid blue;
     width: 100%;
-    overflow-y: auto;
 }
 
 .box {
     width: calc(100% - 10px);
-    display: inline-block;
-    border: 1px solid red;
+    background: green;
     aspect-ratio: 10/12;
     margin: 10px;
+}
+
+@media screen and (min-width: 400px) {
+    h1 {
+        font-size: 4rem;
+    }
 }
 
 @media screen and (min-width: 576px) {
@@ -63,6 +77,10 @@ main {
 }
 
 @media screen and (min-width: 992px) {
+    .notes-wrapper {
+        max-width: 1000px;
+    }
+
     .box {
         /* 60px = (10 * 6)px di .box margin */
         width: calc((100% - 60px) / 3); 
@@ -105,3 +123,4 @@ main {
 .flex-col {
     flex-direction: column;
 }
+
