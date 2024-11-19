@@ -172,7 +172,7 @@ main {
 
 @media screen and (orientation: portrait) {
     .modal {
-        width: 50vw;
+        width: 60vw;
     }
 }
 
@@ -191,7 +191,7 @@ main {
     }
 }
 
-@media screen and (min-width: 1000px) and (orientation: landscape) {
+@media screen and (max-width: 1200px) and (orientation: landscape) {
     .modal {
         width: 40vw;
     }

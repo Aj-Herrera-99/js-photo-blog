@@ -41,7 +41,6 @@ axios
 // escape key
 window.addEventListener("keyup", (e) => {
     if (e.key === "Escape" && isModal) {
-        triggerEscapeBtn();
         isModal = triggerModalWindow(document.querySelector(".modal"), isModal);
     }
 });
@@ -73,7 +72,7 @@ function generatesNotes(parentElement, data, dataLen) {
 }
 
 function triggerModalWindow(target, modalState) {
-    triggerEscapeBtn();
+    triggerEscapeBtn(modalState);
     if (!modalState) {
         document.body.classList.add(layover);
         document.body.classList.add(overflowHidden);
@@ -87,8 +86,9 @@ function triggerModalWindow(target, modalState) {
     }
 }
 
-function triggerEscapeBtn() {
-    if ($escape.className.indexOf("active") !== 1) {
+function triggerEscapeBtn(modalState) {
+    if (!modalState) {
+        console.log("test");
         // escape button
         $escape.classList.add("active");
         // dopo transitionTime ms, il button escape scompare
@@ -96,6 +96,7 @@ function triggerEscapeBtn() {
             $escape.classList.remove("active");
         }, 2000);
     } else {
+        console.log("test2");
         // escape button
         clearTimeout(escTimeout);
         $escape.classList.remove("active");
