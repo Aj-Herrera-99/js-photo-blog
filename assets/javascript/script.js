@@ -10,10 +10,10 @@ const overflowHidden = "overflow-hidden";
 const $notes = document.querySelectorAll(noteClass);
 const $noteImages = document.querySelectorAll(noteImageClass);
 const $figcaptions = document.querySelectorAll(figcaptionTag);
-const $escape = document.getElementById(escapeId);
 const $notesWrapper = document.querySelector(".notes-wrapper");
 // other variables
 let isModal = false;
+let escTimeout;
 
 // http request with axios
 // URI
