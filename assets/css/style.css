@@ -143,6 +143,14 @@ main {
     }
 }
 
+/** TRIGGERS */
+.after::after {
+    position: absolute;
+    background: #000;
+    inset: 0;
+    
+}
+
 /** UTILITIES */
 .debug {
     border: 3px solid red;
