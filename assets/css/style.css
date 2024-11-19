@@ -1,7 +1,93 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+img {
+    display: block;
+    width: 100%;
+}
+
+:root {
+    --header-height: 125px;
+}
+
 body {
+    width: 100%;
+    height: 100vh;
     background-color: green;
     font-family: "Edu TAS Beginner", cursive;
     font-optical-sizing: auto;
     font-weight: normal;
     font-style: normal;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-height);
+    background-color: red;
+}
+
+main {
+    margin-top: var(--header-height);
+    min-height: calc(100% - var(--header-height));
+    padding: 100px;
+    overflow: hidden;
+}
+
+.notes-wrapper {
+    border: 3px solid blue;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.box {
+    width: calc(100% - 10px) ;
+    display: inline-block;
+    border: 1px solid red;
+    aspect-ratio: 10/12;
+    margin: 10px;
+}
+
+/** UTILITIES */
+.debug {
+    border: 3px solid red;
+}
+
+.debug2 {
+    border: 3px solid blue;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.margin-inline-auto {
+    margin-inline: auto;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.content-center {
+    justify-content: center;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.flex-col {
+    flex-direction: column;
 }
