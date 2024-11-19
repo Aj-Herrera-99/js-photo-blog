@@ -23,6 +23,9 @@ body {
     font-optical-sizing: auto;
     font-weight: normal;
     font-style: normal;
+    background-image: url("../img/cork.png");
+    background-position: center;
+    background-size: contain;
 }
 
 header {
@@ -46,9 +49,6 @@ main {
     margin-top: var(--header-height);
     min-height: calc(100% - var(--header-height));
     padding: 80px;
-    background-image: url("../img/cork.png");
-    background-position: center;
-    background-size: contain;
 }
 
 .notes-wrapper {
@@ -56,22 +56,25 @@ main {
 }
 
 .note {
-    background: red;
-    width: calc(100% - 10px);
-    aspect-ratio: 3/4;
+    background: #ffffff;
+    /* 20px = 10px + 10px di .box margin */
+    width: calc(100% - 20px);
+    aspect-ratio: 7/9;
     margin: 10px;
-    padding: 15px;
+    padding: 13px;
+    padding-bottom: 0;
+    font-size: 1.1rem;
 }
 
 .note img {
     width: 100%;
     background: green;
-    aspect-ratio: 1;
+    aspect-ratio: 7/8;
 }
 
 .note figcaption {
     width: 100%;
-    background: blue;
+    padding-block: 10px;
 }
 
 @media screen and (min-width: 400px) {
@@ -81,9 +84,10 @@ main {
 }
 
 @media screen and (min-width: 576px) {
-    .box {
+    .note {
         /* 40px = 10px + 10px + 10px + 10px di .box margin */
-        width: calc((100% - 40px) / 2); 
+        width: calc((100% - 40px) / 2);
+        font-size: 1.3rem;
     }
 }
 
@@ -92,9 +96,10 @@ main {
         max-width: 1000px;
     }
 
-    .box {
+    .note {
         /* 60px = (10 * 6)px di .box margin */
-        width: calc((100% - 60px) / 3); 
+        width: calc((100% - 60px) / 3);
+        font-size: 1.5rem;
     }
 }
 
@@ -134,4 +139,3 @@ main {
 .flex-col {
     flex-direction: column;
 }
-
