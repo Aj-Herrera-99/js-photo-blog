@@ -1,20 +1,18 @@
 #escape {
     background: none;
-    position: absolute;
+    position: fixed;
     top: -40px;
     left: 50%;
     height: fit-content;
     width: fit-content;
     transform: translateX(-50%);
-    z-index: 1000;
     border-color: white;
     color: white;
     padding: 5px 12px;
     border-radius: 15px;
     cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.2s ease;
     z-index: 100000;
+    transition: all 0.2s ease;
 }
 
 #escape.active {
