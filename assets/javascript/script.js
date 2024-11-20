@@ -9,7 +9,8 @@ const _KEY = "_limit";
 const _VALUE = "2";
 // important ids, classes, tags selections
 const escapeBtnId = "escape-btn";
-const addId = "add-btn";
+const addBtnId = "add-btn";
+const removeBtnId = "remove-btn";
 const notesWrapperClass = ".notes-wrapper";
 const noteClass = ".note";
 const loaderClass = ".loader";
@@ -28,8 +29,10 @@ const dNone = "d-none";
 // DOM elements selection $prefix
 const $notesWrapper = document.querySelector(notesWrapperClass);
 const $escapeBtn = document.getElementById(escapeBtnId);
-const $add = document.getElementById(addId);
+const $addBtn = document.getElementById(addBtnId);
+const $removeBtn = document.getElementById(removeBtnId);
 // other variables
+const notesDataSaved = [];
 // for modal window and escape info message
 let isModal = false;
 let escTimeout;
@@ -55,7 +58,7 @@ setTimeout(() => {
 // al caricamento della pagina e di tutte le sue dipendenze invochi il listener
 window.addEventListener("load", async function () {
     // dati presi da una chiamata ajax
-    let myData = await getData(url + resource, params);
+    let myData = await getData(url + resource, params, notesDataSaved);
     // costruisco template a partire dai dati ricevuti e li inserisco in un contenitore
     buildTemplateFrom(myData, $notesWrapper);
     // notes click event
@@ -72,17 +75,24 @@ window.addEventListener("keyup", (e) => {
         );
     }
 });
-// add click event
-$add.addEventListener("click", async function () {
-    console.log(this);
-    let myData = await getData(url + resource, {
-        id: random(0, 100).toString(),
-    });
+// add btn click event
+$addBtn.addEventListener("click", async () => {
+    let myData = await getData(
+        url + resource,
+        {
+            id: random(0, 100).toString(),
+        },
+        notesDataSaved
+    );
     buildTemplateFrom(myData, $notesWrapper);
     $notesWrapper.lastElementChild.addEventListener("click", handleNoteClick);
     $notesWrapper.lastElementChild.scrollIntoView();
 });
-// escape button click event
+// remove btn click event
+$removeBtn.addEventListener("click", (e) => {
+    console.log(e.target);
+});
+// escape btn click event
 $escapeBtn.addEventListener("click", () => {
     isModal = triggerModalWindow(document.querySelector(`.${modal}`), isModal);
 });
@@ -111,10 +121,13 @@ function handleMediaChange(x) {
 // =============================================================================
 //! ********************  FUNCTIONS  ************************************
 // =============================================================================
-async function getData(completeUrl, params) {
+async function getData(completeUrl, params, saving) {
     try {
         const res = await axios.get(completeUrl, { params });
-        return res.data;
+        const data = await res.data;
+        data.forEach((data) => saving.push(data));
+        console.log(saving);
+        return data;
     } catch (e) {
         console.error(e);
     }

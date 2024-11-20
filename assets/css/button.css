@@ -1,7 +1,7 @@
 button {
     all: unset;
     height: fit-content;
-    width: fit-content; 
+    width: fit-content;
     padding: 5px 12px;
     border-radius: 15px;
     z-index: 100000;
@@ -9,6 +9,7 @@ button {
     cursor: pointer;
 }
 
+/** ESCAPE  */
 #escape-btn {
     position: fixed;
     top: -50px;
@@ -24,28 +25,27 @@ button {
     animation: bounce 1s ease 1;
     animation-delay: 0.2s;
 }
-
-.add-remove-wrapper{
+/** ADD AND REMOVE  */
+.add-remove-wrapper {
     position: fixed;
     top: calc(var(--header-height) + 20px);
     left: 2vw;
 }
 
-#add-btn, #remove-btn{
+#add-btn,
+#remove-btn {
     background: rgba(138, 82, 22, 0.6);
     color: rgba(255, 255, 255, 0.8);
     margin-block: 10px;
 }
 
-.hover-on #add-btn:hover, 
+.hover-on #add-btn:hover,
 .hover-on #remove-btn:hover,
-#add-btn:active, #remove-btn:active{
+#add-btn:active,
+#remove-btn:active {
     background: rgba(138, 82, 22, 0.7);
     color: rgba(255, 255, 255, 1);
-}
-
-.hover-on #add:hover {
-    scale: 1.1;
+    scale: 105%;
 }
 
 @keyframes bounce {
