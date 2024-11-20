@@ -6,7 +6,7 @@ import random from "./utilities.js";
 const _URL = "https://jsonplaceholder.typicode.com/";
 const _RESOURCE = "photos";
 const _KEY = "_limit";
-const _VALUE = "2";
+const _VALUE = "6";
 // important ids, classes, tags selections
 const escapeBtnId = "escape-btn";
 const addBtnId = "add-btn";
@@ -107,8 +107,15 @@ $removeBtn.addEventListener("click", function (e) {
 function handleRemoveNote(e) {
     const target = e.target.closest(noteClass);
     if (target) {
+        const indexElRemove = notesDataSaved.findIndex(
+            (el) =>
+                el.albumId == target.getAttribute("albumid") &&
+                el.id == target.id
+        );
+        if (indexElRemove !== -1) {
+            notesDataSaved.splice(indexElRemove, 1);
+        }
         target.remove();
-        //! toglierlo anche dall array di salvataggio
     }
 }
 
@@ -167,7 +174,7 @@ async function getData(completeUrl, params, saving) {
 function buildTemplateFrom(data, wrapperElement) {
     let template = "";
     for (let i = 0; i < data.length; i++) {
-        template += `<figure class="note d-flex flex-wrap">
+        template += `<figure class="note d-flex flex-wrap" id="${data[i].id}" albumid="${data[i].albumId}">
                     <div class="pin"><img src="./assets/img/pin.svg" alt="pin"></div>
                     <img class="note-image" src="${data[i].url}" alt="img">
                     <figcaption class="d-flex items-center text-capitalize">${data[i].title}</figcaption>
