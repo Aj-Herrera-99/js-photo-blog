@@ -11,6 +11,7 @@ const _VALUE = "2";
 const escapeBtnId = "escape-btn";
 const addBtnId = "add-btn";
 const removeBtnId = "remove-btn";
+const escRemoveBtnId = "escape-remove-btn";
 const notesWrapperClass = ".notes-wrapper";
 const noteClass = ".note";
 const loaderClass = ".loader";
@@ -31,8 +32,10 @@ const $notesWrapper = document.querySelector(notesWrapperClass);
 const $escapeBtn = document.getElementById(escapeBtnId);
 const $addBtn = document.getElementById(addBtnId);
 const $removeBtn = document.getElementById(removeBtnId);
+const $escRemoveBtn = document.getElementById(escRemoveBtnId);
 // other variables
 const notesDataSaved = [];
+let trashMode = false;
 // for modal window and escape info message
 let isModal = false;
 let escTimeout;
@@ -89,9 +92,35 @@ $addBtn.addEventListener("click", async () => {
     $notesWrapper.lastElementChild.scrollIntoView();
 });
 // remove btn click event
-$removeBtn.addEventListener("click", (e) => {
-    console.log(e.target);
+$removeBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    this.innerText = "Clicca sul post-it da rimuovere";
+    this.disabled = true;
+    $addBtn.classList.add(dNone);
+    $escRemoveBtn.classList.remove(dNone);
+    this.classList.add("disabled");
+    $notesWrapper.style.backgroundColor =
+        "rgba(0, 0, 0, 0.5)"
+    trashMode = true;
+    window.addEventListener("click", (e) => {
+        const target = e.target.closest(noteClass);
+        if (target) {
+            target.remove();
+            //! toglierlo anche dall array di salvataggio
+        }
+    });
 });
+
+$escRemoveBtn.addEventListener("click", function(e){
+    e.stopPropagation();
+    $removeBtn.innerText = "Rimuovi un post-it!";
+    $removeBtn.disabled = false;
+    $addBtn.classList.remove(dNone);
+    this.classList.add(dNone);
+    $removeBtn.classList.remove("disabled");
+    $notesWrapper.style.removeProperty("background-color");
+    trashMode = false;
+})
 // escape btn click event
 $escapeBtn.addEventListener("click", () => {
     isModal = triggerModalWindow(document.querySelector(`.${modal}`), isModal);
@@ -146,6 +175,9 @@ function buildTemplateFrom(data, wrapperElement) {
 }
 
 function triggerModalWindow(target, modalState) {
+    if (trashMode) {
+        return false;
+    }
     // chiamo la funzione che gestisce l'escape btn
     triggerEscapeBtn(modalState);
     // seleziono pin e figcaption della note target
