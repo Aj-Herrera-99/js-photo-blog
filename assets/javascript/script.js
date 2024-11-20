@@ -8,11 +8,12 @@ const _PHOTOS = "photos";
 const _KEY = "_limit";
 const _VALUE = "10";
 // important ids, classes, tags selections
+const escapeId = "escape";
 const notesWrapperClass = ".notes-wrapper";
 const noteClass = ".note";
 const noteImageClass = ".note-image";
+const loaderClass = ".loader";
 const figcaptionTag = "figcaption";
-const escapeId = "escape";
 // css classes
 const layover = "layover";
 const modal = "modal";
@@ -39,7 +40,12 @@ const url = _URL;
 const resource = _PHOTOS;
 const params = {};
 params[_KEY] = _VALUE;
-getData(url + resource, params, $notesWrapper);
+// simulazione loader ( sicuramente da cambiare ) => dopo un tot prendo i dati della chiamata
+setTimeout(() => {
+    document.body.classList.remove(layover);
+    document.querySelector(loaderClass).classList.remove(active);
+    getData(url + resource, params, $notesWrapper);
+}, 500);
 
 // =============================================================================
 // ********************  EVENT LISTENERS  ************************************
@@ -86,18 +92,11 @@ function handleMediaChange(x) {
 // =============================================================================
 function getData(completeUrl, params, parentElement) {
     // struttura chiamata http con axios in GET
-    let clock;
     axios
         .get(completeUrl, { params })
-        .then((res) => { let count = 0;
-            clock = setInterval(() => {
-            count++;
-            console.log(count)
-        }, 1000);
-            return res.data})
+        .then((res) => res.data)
         .then((data) => {
             generatesNotes(parentElement, data, data.length);
-            clearInterval(clock);
             function generatesNotes(parentElement, data, dataLen) {
                 let template = "";
                 for (let i = 0; i < dataLen; i++) {

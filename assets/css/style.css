@@ -181,6 +181,11 @@ main {
     }
 }
 
+@media screen and (orientation: landscape) {
+    .modal {
+        width: 25vw;
+    }
+}
 @media screen and (max-width: 1200px) and (orientation: landscape) {
     .modal {
         width: 35vw;

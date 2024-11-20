@@ -2,7 +2,10 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -14,24 +17,26 @@
         <link rel="stylesheet" href="./assets/css/utilities.css" />
         <link rel="stylesheet" href="./assets/css/style.css" />
         <link rel="stylesheet" href="./assets/css/escape.css" />
+        <link rel="stylesheet" href="./assets/css/loader.css" />
         <title>Photo Blog</title>
     </head>
 
-    <body>
-
-        <button id="escape" class="">
-            Premi ESC o clicca sul post-it per uscire
-        </button>
-
+    <body class="layover">
+        <!-- HEADER -->
         <header class="d-flex content-center items-center">
             <h1>estate '24</h1>
         </header>
-
+        <!-- MAIN -->
         <main class="d-flex content-center items-center">
             <div class="notes-wrapper d-flex flex-wrap">
-                <!-- figure note dynamic  -->  
+                <!-- figure note dynamic  -->
             </div>
         </main>
-        
+        <!-- ESCAPE BUTTON -->
+        <button id="escape" class="">
+            Premi ESC o clicca sul post-it per uscire
+        </button>
+        <!-- LOADER -->
+        <div class="loader active"></div>
     </body>
 </html>
