@@ -79,7 +79,7 @@ main {
     transition: all 0.2s ease;
 }
 
-.note:hover {
+.hover-on .note:hover {
     box-shadow: 3px 3px 30px rgb(0, 0, 0);
     scale: 1.1;
     translate: 10px -10px;
@@ -134,7 +134,7 @@ main {
     z-index: 10000;
 }
 
-.modal:hover {
+.hover-on .modal:hover {
     box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8);
     scale: 0.99;
     translate: initial;

@@ -1,4 +1,6 @@
 "use strict";
+// constant
+const NOTES_COUNT = 19;
 // important ids classes tags
 const notesWrapperClass = ".notes-wrapper";
 const noteClass = ".note";
@@ -7,16 +9,18 @@ const figcaptionTag = "figcaption";
 const escapeId = "escape";
 // css classes
 const layover = "layover";
-const overflowHidden = "overflow-hidden";
 // DOM elements selection
 const $noteImages = document.querySelectorAll(noteImageClass);
+const $notesWrapper = document.querySelector(notesWrapperClass);
 const $figcaptions = document.querySelectorAll(figcaptionTag);
 const $escape = document.getElementById(escapeId);
-const $notesWrapper = document.querySelector(notesWrapperClass);
 // other variables
 let isModal = false;
 let escTimeout;
-const NOTES_COUNT = 19;
+const hoverOff = window.matchMedia("(max-width: 992px)");
+
+hoverMediaQuery(hoverOff);
+
 // http request with axios, for generating notes
 // URI
 const url = "https://jsonplaceholder.typicode.com/";
@@ -35,7 +39,7 @@ axios
     });
 
 // =============================================================================
-// ********************  EVENT LISTENERS  ************************************ 
+// ********************  EVENT LISTENERS  ************************************
 // =============================================================================
 // note event listener in axios generatesNotes()
 // escape key
@@ -44,9 +48,13 @@ window.addEventListener("keyup", (e) => {
         isModal = triggerModalWindow(document.querySelector(".modal"), isModal);
     }
 });
+// Attach listener function on state changes
+hoverOff.addEventListener("change", () => {
+    hoverMediaQuery(hoverOff);
+});
 
 // =============================================================================
-// ********************  EVENT HANDLERS  ************************************ 
+// ********************  EVENT HANDLERS  ************************************
 // =============================================================================
 function handleNoteClick(e) {
     console.log(this);
@@ -54,7 +62,7 @@ function handleNoteClick(e) {
 }
 
 // =============================================================================
-//! ********************  FUNCTIONS  ************************************ 
+//! ********************  FUNCTIONS  ************************************
 // =============================================================================
 function generatesNotes(parentElement, data, dataLen) {
     let template = "";
@@ -82,21 +90,29 @@ function triggerModalWindow(target, modalState) {
         target.classList.remove("modal");
         return false;
     }
+    function triggerEscapeBtn(modalState) {
+        if (!modalState) {
+            console.log("test");
+            // escape button
+            $escape.classList.add("active");
+            // dopo transitionTime ms, il button escape scompare
+            escTimeout = setTimeout(() => {
+                $escape.classList.remove("active");
+            }, 2000);
+        } else {
+            console.log("test2");
+            // escape button
+            clearTimeout(escTimeout);
+            $escape.classList.remove("active");
+        }
+    }
 }
 
-function triggerEscapeBtn(modalState) {
-    if (!modalState) {
-        console.log("test");
-        // escape button
-        $escape.classList.add("active");
-        // dopo transitionTime ms, il button escape scompare
-        escTimeout = setTimeout(() => {
-            $escape.classList.remove("active");
-        }, 2000);
+function hoverMediaQuery(x) {
+    if (x.matches) {
+        // If media query matches
+        document.body.classList.remove("hover-on");
     } else {
-        console.log("test2");
-        // escape button
-        clearTimeout(escTimeout);
-        $escape.classList.remove("active");
+        document.body.classList.add("hover-on");
     }
 }
