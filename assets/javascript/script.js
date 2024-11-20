@@ -81,6 +81,7 @@ $add.addEventListener("click", async function () {
         id: random(0, 100).toString(),
     });
     buildTemplateFrom(myData, $notesWrapper);
+    $notesWrapper.lastElementChild.scrollIntoView();
 });
 // escape button click event
 $escape.addEventListener("click", () => {
