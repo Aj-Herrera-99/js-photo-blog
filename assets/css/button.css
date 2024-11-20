@@ -52,6 +52,7 @@ button {
 }
 
 button.disabled {
+    font-size: small;
     cursor: not-allowed;
 }
 

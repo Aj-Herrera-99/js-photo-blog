@@ -98,7 +98,7 @@ $addBtn.addEventListener("click", async () => {
 // remove btn click event
 $removeBtn.addEventListener("click", function (e) {
     e.stopPropagation();
-    this.innerText = "Clicca sul post-it da rimuovere";
+    this.innerText = "Clicca sulla polaroid da rimuovere";
     this.disabled = true;
     $addBtn.classList.add(dNone);
     $escRemoveBtn.classList.remove(dNone);
@@ -106,33 +106,24 @@ $removeBtn.addEventListener("click", function (e) {
     $header.classList.add(dNone);
     $main.style.marginTop = "0px";
     trashMode = true;
+    for (let note of $notesWrapper.children) {
+        note.classList.add("constant-tilt-shake");
+    }
     window.addEventListener("click", handleRemoveNote);
 });
-
-function handleRemoveNote(e) {
-    const target = e.target.closest(noteClass);
-    if (target) {
-        const indexElRemove = notesDataSaved.findIndex(
-            (el) =>
-                el.albumId == target.getAttribute("albumid") &&
-                el.id == target.id
-        );
-        if (indexElRemove !== -1) {
-            notesDataSaved.splice(indexElRemove, 1);
-        }
-        target.remove();
-    }
-}
-
+// escape remove btn click event
 $escRemoveBtn.addEventListener("click", function (e) {
     e.stopPropagation();
-    $removeBtn.innerText = "Rimuovi un post-it!";
+    $removeBtn.innerText = "Rimuovi una polaroid!";
     $removeBtn.disabled = false;
     $addBtn.classList.remove(dNone);
     this.classList.add(dNone);
     $removeBtn.classList.remove("disabled");
     $header.classList.remove(dNone);
     $main.style.removeProperty("margin-top");
+    for (let note of $notesWrapper.children) {
+        note.classList.remove("constant-tilt-shake");
+    }
     trashMode = false;
     window.removeEventListener("click", handleRemoveNote);
 });
@@ -160,6 +151,21 @@ function handleMediaChange(x) {
     x.matches
         ? document.body.classList.remove(hoverOn)
         : document.body.classList.add(hoverOn);
+}
+
+function handleRemoveNote(e) {
+    const target = e.target.closest(noteClass);
+    if (target) {
+        const indexElRemove = notesDataSaved.findIndex(
+            (el) =>
+                el.albumId == target.getAttribute("albumid") &&
+                el.id == target.id
+        );
+        if (indexElRemove !== -1) {
+            notesDataSaved.splice(indexElRemove, 1);
+        }
+        target.remove();
+    }
 }
 
 // =============================================================================

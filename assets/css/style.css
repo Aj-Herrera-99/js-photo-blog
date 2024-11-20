@@ -31,7 +31,7 @@ body {
     background-image: url("../img/cork.png");
     background-position: center;
     background-size: contain;
-    font-size:large;
+    font-size: large;
 }
 
 header {
@@ -98,7 +98,7 @@ main {
     top: 0;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition: all .2s ease;
+    transition: all 0.2s ease;
 }
 
 .note img:not(.pin img) {
@@ -145,6 +145,10 @@ main {
     translate: initial;
     rotate: initial;
     z-index: 10000;
+}
+
+.constant-tilt-shake {
+    animation: tilt-shaking 2s infinite;
 }
 
 /************  MEDIA QUERIES  **********************  */
@@ -204,5 +208,35 @@ main {
     .modal {
         top: 45%;
         width: 25vw;
+    }
+}
+
+/**************** ANIMATIONS  ************************/
+@keyframes tilt-shaking {
+    0%,
+    4%,
+    8%,
+    12%,
+    16%,
+    20%,
+    80%,
+    84%,
+    88%,
+    92%,
+    96%,
+    100% {
+        transform: rotate(0deg);
+    }
+    2%,
+    6%,
+    10%,
+    14%,
+    18%,
+    82%,
+    86%,
+    90%,
+    94%,
+    98% {
+        transform: rotate(1deg);
     }
 }
