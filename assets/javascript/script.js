@@ -99,19 +99,20 @@ $removeBtn.addEventListener("click", function (e) {
     $addBtn.classList.add(dNone);
     $escRemoveBtn.classList.remove(dNone);
     this.classList.add("disabled");
-    $notesWrapper.style.backgroundColor =
-        "rgba(0, 0, 0, 0.5)"
+    $notesWrapper.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
     trashMode = true;
-    window.addEventListener("click", (e) => {
-        const target = e.target.closest(noteClass);
-        if (target) {
-            target.remove();
-            //! toglierlo anche dall array di salvataggio
-        }
-    });
+    window.addEventListener("click", handleRemoveNote);
 });
 
-$escRemoveBtn.addEventListener("click", function(e){
+function handleRemoveNote(e) {
+    const target = e.target.closest(noteClass);
+    if (target) {
+        target.remove();
+        //! toglierlo anche dall array di salvataggio
+    }
+}
+
+$escRemoveBtn.addEventListener("click", function (e) {
     e.stopPropagation();
     $removeBtn.innerText = "Rimuovi un post-it!";
     $removeBtn.disabled = false;
@@ -120,7 +121,8 @@ $escRemoveBtn.addEventListener("click", function(e){
     $removeBtn.classList.remove("disabled");
     $notesWrapper.style.removeProperty("background-color");
     trashMode = false;
-})
+    window.removeEventListener("click", handleRemoveNote);
+});
 // escape btn click event
 $escapeBtn.addEventListener("click", () => {
     isModal = triggerModalWindow(document.querySelector(`.${modal}`), isModal);
