@@ -55,7 +55,11 @@ window.addEventListener("keyup", (e) => {
         );
     }
 });
-// media query list listener
+// escape button click event
+$escape.addEventListener("click", () => {
+    isModal = triggerModalWindow(document.querySelector(`.${modal}`), isModal);
+});
+// media query list change event
 toggleHover.addEventListener("change", function () {
     handleMediaChange(this);
 });
