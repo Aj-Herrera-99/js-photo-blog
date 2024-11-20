@@ -12,6 +12,10 @@ img {
     width: 100%;
 }
 
+button {
+    all: unset;
+}
+
 :root {
     --header-height: 100px;
     --note-margin-inline: 10px;
@@ -31,6 +35,7 @@ body {
     background-image: url("../img/cork.png");
     background-position: center;
     background-size: contain;
+    font-size:large;
 }
 
 header {

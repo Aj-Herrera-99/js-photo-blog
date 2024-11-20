@@ -1,4 +1,4 @@
-"use strict";
+import random from "./utilities.js";
 // =============================================================================
 // ******************* INITIAL SETTINGS ******************************
 // =============================================================================
@@ -6,9 +6,10 @@
 const _URL = "https://jsonplaceholder.typicode.com/";
 const _RESOURCE = "photos";
 const _KEY = "_limit";
-const _VALUE = "10";
+const _VALUE = "2";
 // important ids, classes, tags selections
 const escapeId = "escape";
+const addId = "add";
 const notesWrapperClass = ".notes-wrapper";
 const noteClass = ".note";
 const noteImageClass = ".note-image";
@@ -30,6 +31,7 @@ const $noteImages = document.querySelectorAll(noteImageClass);
 const $notesWrapper = document.querySelector(notesWrapperClass);
 const $figcaptions = document.querySelectorAll(figcaptionTag);
 const $escape = document.getElementById(escapeId);
+const $add = document.getElementById(addId);
 // other variables
 // for modal window and escape info message
 let isModal = false;
@@ -48,21 +50,22 @@ setTimeout(() => {
     document.body.classList.remove(layover);
     document.querySelector(loaderClass).classList.remove(active);
 }, 500);
-
-// dati presi da una chiamata ajax
-const myData = await getData(url + resource, params);
-// costruisco template a partire dai dati ricevuti e li inserisco in un contenitore
-buildTemplateFrom(myData, $notesWrapper);
-
 // =============================================================================
 // ********************  EVENT LISTENERS  ************************************
 // =============================================================================
-// notes click event
-$notesWrapper
-    .querySelectorAll(noteClass)
-    .forEach((note) => note.addEventListener("click", handleNoteClick));
+// window events
+// al caricamento della pagina e di tutte le sue dipendenze invochi il listener
+window.addEventListener("load", async function () {
+    // dati presi da una chiamata ajax
+    let myData = await getData(url + resource, params);
+    // costruisco template a partire dai dati ricevuti e li inserisco in un contenitore
+    buildTemplateFrom(myData, $notesWrapper);
+    // notes click event
+    $notesWrapper
+        .querySelectorAll(noteClass)
+        .forEach((note) => note.addEventListener("click", handleNoteClick));
+});
 
-// window listener
 window.addEventListener("keyup", (e) => {
     if (e.key === "Escape" && isModal) {
         isModal = triggerModalWindow(
@@ -70,6 +73,14 @@ window.addEventListener("keyup", (e) => {
             isModal
         );
     }
+});
+// add click event
+$add.addEventListener("click", async function () {
+    console.log(this);
+    let myData = await getData(url + resource, {
+        id: random(0, 100).toString(),
+    });
+    buildTemplateFrom(myData, $notesWrapper);
 });
 // escape button click event
 $escape.addEventListener("click", () => {
@@ -118,7 +129,7 @@ function buildTemplateFrom(data, wrapperElement) {
                     <figcaption class="d-flex items-center text-capitalize">${data[i].title}</figcaption>
                 </figure>   `;
     }
-    wrapperElement.innerHTML = template;
+    wrapperElement.innerHTML += template;
 }
 
 function triggerModalWindow(target, modalState) {
