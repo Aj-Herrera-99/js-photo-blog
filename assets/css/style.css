@@ -176,6 +176,12 @@ main {
     }
 }
 
+@media screen and (max-width: 1200px) and (orientation: landscape) {
+    .modal {
+        width: 35vw;
+    }
+}
+
 @media screen and (max-width: 1000px) and (orientation: landscape) {
     header {
         position: absolute;
@@ -187,12 +193,6 @@ main {
 
     .modal {
         top: 45%;
-        width: 27vw;
-    }
-}
-
-@media screen and (max-width: 1200px) and (orientation: landscape) {
-    .modal {
-        width: 35vw;
+        width: 25vw;
     }
 }
