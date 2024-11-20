@@ -12,7 +12,6 @@ const escapeId = "escape";
 const addId = "add";
 const notesWrapperClass = ".notes-wrapper";
 const noteClass = ".note";
-const noteImageClass = ".note-image";
 const loaderClass = ".loader";
 const pinClass = ".pin";
 const figcaptionTag = "figcaption";
@@ -27,9 +26,7 @@ const dNone = "d-none";
 // ******************* STARTING POINT ******************************
 // =============================================================================
 // DOM elements selection $prefix
-const $noteImages = document.querySelectorAll(noteImageClass);
 const $notesWrapper = document.querySelector(notesWrapperClass);
-const $figcaptions = document.querySelectorAll(figcaptionTag);
 const $escape = document.getElementById(escapeId);
 const $add = document.getElementById(addId);
 // other variables
@@ -43,8 +40,9 @@ handleMediaChange(toggleHover);
 // http request with axios, for generating notes
 const url = _URL;
 const resource = _RESOURCE;
-const params = {};
-params[_KEY] = _VALUE;
+const params = {
+    [_KEY]: _VALUE,
+};
 // simulazione loader ( sicuramente da cambiare ) => dopo un tot prendo i dati della chiamata
 setTimeout(() => {
     document.body.classList.remove(layover);
@@ -81,6 +79,7 @@ $add.addEventListener("click", async function () {
         id: random(0, 100).toString(),
     });
     buildTemplateFrom(myData, $notesWrapper);
+    $notesWrapper.lastElementChild.addEventListener("click", handleNoteClick);
     $notesWrapper.lastElementChild.scrollIntoView();
 });
 // escape button click event
@@ -130,7 +129,7 @@ function buildTemplateFrom(data, wrapperElement) {
                     <figcaption class="d-flex items-center text-capitalize">${data[i].title}</figcaption>
                 </figure>   `;
     }
-    wrapperElement.innerHTML += template;
+    wrapperElement.insertAdjacentHTML("beforeend", template);
 }
 
 function triggerModalWindow(target, modalState) {
