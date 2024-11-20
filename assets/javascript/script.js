@@ -44,13 +44,13 @@ params[_KEY] = _VALUE;
 setTimeout(() => {
     document.body.classList.remove(layover);
     document.querySelector(loaderClass).classList.remove(active);
-    getData(url + resource, params, $notesWrapper);
 }, 500);
 
 // =============================================================================
 // ********************  EVENT LISTENERS  ************************************
 // =============================================================================
 // ? note event listener in generatesNotes() > getData()
+
 // window listener
 window.addEventListener("keyup", (e) => {
     if (e.key === "Escape" && isModal) {
@@ -90,35 +90,6 @@ function handleMediaChange(x) {
 // =============================================================================
 //! ********************  FUNCTIONS  ************************************
 // =============================================================================
-function getData(completeUrl, params, parentElement) {
-    // struttura chiamata http con axios in GET
-    axios
-        .get(completeUrl, { params })
-        .then((res) => res.data)
-        .then((data) => {
-            generatesNotes(parentElement, data, data.length);
-            function generatesNotes(parentElement, data, dataLen) {
-                let template = "";
-                for (let i = 0; i < dataLen; i++) {
-                    template += `<figure class="note d-flex flex-wrap">
-                    <div class="pin"><img src="./assets/img/pin.svg" alt="pin"></div>
-                    <img class="note-image" src="${data[i].url}" alt="img">
-                    <figcaption class="d-flex items-center text-capitalize">${data[i].title}</figcaption>
-                </figure>   `;
-                }
-                parentElement.innerHTML = template;
-                const notes = document.querySelectorAll(noteClass);
-                //* note event listener
-                notes.forEach((note) =>
-                    note.addEventListener("click", handleNoteClick)
-                );
-            }
-        })
-        .catch((err) => {
-            console.error(err);
-        });
-}
-
 function triggerModalWindow(target, modalState) {
     // chiamo la funzione che gestisce l'escape btn
     triggerEscapeBtn(modalState);
@@ -167,4 +138,45 @@ function triggerModalWindow(target, modalState) {
             $escape.classList.remove(active);
         }
     }
+}
+
+// =============================================================================
+// ! **************************************************************************
+// ! **************************************************************************
+// ! **************************************************************************
+// ! **************************************************************************
+// ! **************************************************************************
+// ! **************************************************************************
+// =============================================================================
+// struttura chiamata http con axios in GET
+// function getData(completeUrl, params) {
+//     return axios
+//         .get(completeUrl, { params })
+//         .then((res) => res.data)
+//         .catch((err) => console.error(err));
+// }
+
+//! NON HO CAPITO PERCHE POSSO USARE AWAIT AL DI FUORI DI UN ASYNC FUNC
+const myData = await getData(url + resource, params);
+let template = buildTemplateFrom(myData, myData.length);
+$notesWrapper.innerHTML = template;
+$notesWrapper
+    .querySelectorAll(".note")
+    .forEach((note) => note.addEventListener("click", handleNoteClick));
+
+async function getData(completeUrl, params) {
+    const res = await axios.get(completeUrl, { params });
+    return res.data;
+}
+
+function buildTemplateFrom(data, dataLen) {
+    let template = "";
+    for (let i = 0; i < dataLen; i++) {
+        template += `<figure class="note d-flex flex-wrap">
+                    <div class="pin"><img src="./assets/img/pin.svg" alt="pin"></div>
+                    <img class="note-image" src="${data[i].url}" alt="img">
+                    <figcaption class="d-flex items-center text-capitalize">${data[i].title}</figcaption>
+                </figure>   `;
+    }
+    return template;
 }
