@@ -4,7 +4,7 @@
 // =============================================================================
 // constant
 const _URL = "https://jsonplaceholder.typicode.com/";
-const _PHOTOS = "photos";
+const _RESOURCE = "photos";
 const _KEY = "_limit";
 const _VALUE = "10";
 // important ids, classes, tags selections
@@ -40,7 +40,7 @@ const toggleHover = window.matchMedia("(max-width: 992px)");
 handleMediaChange(toggleHover);
 // http request with axios, for generating notes
 const url = _URL;
-const resource = _PHOTOS;
+const resource = _RESOURCE;
 const params = {};
 params[_KEY] = _VALUE;
 // simulazione loader ( sicuramente da cambiare ) => dopo un tot prendo i dati della chiamata
