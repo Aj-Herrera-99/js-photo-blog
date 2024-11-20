@@ -13,12 +13,15 @@ const notesWrapperClass = ".notes-wrapper";
 const noteClass = ".note";
 const noteImageClass = ".note-image";
 const loaderClass = ".loader";
+const pinClass = ".pin";
 const figcaptionTag = "figcaption";
 // css classes
 const layover = "layover";
 const modal = "modal";
 const active = "active";
 const hoverOn = "hover-on";
+const hideParent = "hide-parent";
+const dNone = "d-none";
 // =============================================================================
 // ******************* STARTING POINT ******************************
 // =============================================================================
@@ -46,10 +49,18 @@ setTimeout(() => {
     document.querySelector(loaderClass).classList.remove(active);
 }, 500);
 
+// dati presi da una chiamata ajax
+const myData = await getData(url + resource, params);
+// costruisco template a partire dai dati ricevuti e li inserisco in un contenitore
+buildTemplateFrom(myData, $notesWrapper);
+
 // =============================================================================
 // ********************  EVENT LISTENERS  ************************************
 // =============================================================================
-// ? note event listener in generatesNotes() > getData()
+// notes click event
+$notesWrapper
+    .querySelectorAll(noteClass)
+    .forEach((note) => note.addEventListener("click", handleNoteClick));
 
 // window listener
 window.addEventListener("keyup", (e) => {
@@ -73,7 +84,6 @@ toggleHover.addEventListener("change", function () {
 // ********************  EVENT HANDLERS  ************************************
 // =============================================================================
 function handleNoteClick(e) {
-    console.log(this);
     isModal = triggerModalWindow(this, isModal);
 }
 
@@ -90,21 +100,42 @@ function handleMediaChange(x) {
 // =============================================================================
 //! ********************  FUNCTIONS  ************************************
 // =============================================================================
+async function getData(completeUrl, params) {
+    try {
+        const res = await axios.get(completeUrl, { params });
+        return res.data;
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+function buildTemplateFrom(data, wrapperElement) {
+    let template = "";
+    for (let i = 0; i < data.length; i++) {
+        template += `<figure class="note d-flex flex-wrap">
+                    <div class="pin"><img src="./assets/img/pin.svg" alt="pin"></div>
+                    <img class="note-image" src="${data[i].url}" alt="img">
+                    <figcaption class="d-flex items-center text-capitalize">${data[i].title}</figcaption>
+                </figure>   `;
+    }
+    wrapperElement.innerHTML = template;
+}
+
 function triggerModalWindow(target, modalState) {
     // chiamo la funzione che gestisce l'escape btn
     triggerEscapeBtn(modalState);
     // seleziono pin e figcaption della note target
-    const targetPin = target.querySelector(".pin");
-    const targetFigcaption = target.querySelector("figcaption");
+    const targetPin = target.querySelector(pinClass);
+    const targetFigcaption = target.querySelector(figcaptionTag);
     // se non ho la modale aperta allora aprila
     if (!modalState) {
         // aggiungo le classi in funzione della finestra modale
         document.body.classList.add(layover);
         target.classList.add(modal);
-        target.classList.add("hide-parent");
+        target.classList.add(hideParent);
         // in modale, faccio scomparire il pin e figcaption
-        targetPin.classList.add("d-none");
-        targetFigcaption.classList.add("d-none");
+        targetPin.classList.add(dNone);
+        targetFigcaption.classList.add(dNone);
         // ritorno true alla variabile isModal (vedere invocazione)
         return true;
     }
@@ -113,10 +144,10 @@ function triggerModalWindow(target, modalState) {
         // rimuovo le classi in funzione della finestra modale
         document.body.classList.remove(layover);
         target.classList.remove(modal);
-        target.classList.remove("hide-parent");
+        target.classList.remove(hideParent);
         // se non ho la modale, faccio apparire pin e figcaption
-        targetPin.classList.remove("d-none");
-        targetFigcaption.classList.remove("d-none");
+        targetPin.classList.remove(dNone);
+        targetFigcaption.classList.remove(dNone);
         // ritorno false alla variabile isModal (vedere invocazione)
         return false;
     }
@@ -138,45 +169,4 @@ function triggerModalWindow(target, modalState) {
             $escape.classList.remove(active);
         }
     }
-}
-
-// =============================================================================
-// ! **************************************************************************
-// ! **************************************************************************
-// ! **************************************************************************
-// ! **************************************************************************
-// ! **************************************************************************
-// ! **************************************************************************
-// =============================================================================
-// struttura chiamata http con axios in GET
-// function getData(completeUrl, params) {
-//     return axios
-//         .get(completeUrl, { params })
-//         .then((res) => res.data)
-//         .catch((err) => console.error(err));
-// }
-
-//! NON HO CAPITO PERCHE POSSO USARE AWAIT AL DI FUORI DI UN ASYNC FUNC
-const myData = await getData(url + resource, params);
-let template = buildTemplateFrom(myData, myData.length);
-$notesWrapper.innerHTML = template;
-$notesWrapper
-    .querySelectorAll(".note")
-    .forEach((note) => note.addEventListener("click", handleNoteClick));
-
-async function getData(completeUrl, params) {
-    const res = await axios.get(completeUrl, { params });
-    return res.data;
-}
-
-function buildTemplateFrom(data, dataLen) {
-    let template = "";
-    for (let i = 0; i < dataLen; i++) {
-        template += `<figure class="note d-flex flex-wrap">
-                    <div class="pin"><img src="./assets/img/pin.svg" alt="pin"></div>
-                    <img class="note-image" src="${data[i].url}" alt="img">
-                    <figcaption class="d-flex items-center text-capitalize">${data[i].title}</figcaption>
-                </figure>   `;
-    }
-    return template;
 }
