@@ -129,7 +129,6 @@ main {
     position: fixed;
     background: #0000007c;
     inset: 0;
-    z-index: 1000;
 }
 
 .modal {

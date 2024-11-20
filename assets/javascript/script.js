@@ -17,6 +17,8 @@ const noteClass = ".note";
 const loaderClass = ".loader";
 const pinClass = ".pin";
 const figcaptionTag = "figcaption";
+const headerTag = "header";
+const mainTag = "main";
 // css classes
 const layover = "layover";
 const modal = "modal";
@@ -28,6 +30,8 @@ const dNone = "d-none";
 // ******************* STARTING POINT ******************************
 // =============================================================================
 // DOM elements selection $prefix
+const $header = document.querySelector(headerTag);
+const $main = document.querySelector(mainTag);
 const $notesWrapper = document.querySelector(notesWrapperClass);
 const $escapeBtn = document.getElementById(escapeBtnId);
 const $addBtn = document.getElementById(addBtnId);
@@ -99,7 +103,8 @@ $removeBtn.addEventListener("click", function (e) {
     $addBtn.classList.add(dNone);
     $escRemoveBtn.classList.remove(dNone);
     this.classList.add("disabled");
-    $notesWrapper.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+    $header.classList.add(dNone);
+    $main.style.marginTop = "0px";
     trashMode = true;
     window.addEventListener("click", handleRemoveNote);
 });
@@ -126,7 +131,8 @@ $escRemoveBtn.addEventListener("click", function (e) {
     $addBtn.classList.remove(dNone);
     this.classList.add(dNone);
     $removeBtn.classList.remove("disabled");
-    $notesWrapper.style.removeProperty("background-color");
+    $header.classList.remove(dNone);
+    $main.style.removeProperty("margin-top");
     trashMode = false;
     window.removeEventListener("click", handleRemoveNote);
 });
