@@ -33,3 +33,13 @@
 .flex-col {
     flex-direction: column;
 }
+
+.d-none {
+    display: none !important;
+}
+
+.hide-parent {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}

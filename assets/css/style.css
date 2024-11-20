@@ -87,6 +87,19 @@ main {
     z-index: 50;
 }
 
+.hover-on .note:hover .pin {
+    opacity: 0;
+}
+
+.pin {
+    width: 15%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all .2s ease;
+}
+
 .note img:not(.pin img) {
     width: 100%;
     background: black;
@@ -107,14 +120,6 @@ main {
 
 .note figcaption::first-letter {
     text-transform: capitalize;
-}
-
-.pin {
-    width: 15%;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 
 /** TRIGGERS */

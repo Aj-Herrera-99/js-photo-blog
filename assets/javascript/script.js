@@ -86,11 +86,18 @@ function handleMediaChange(x) {
 // =============================================================================
 function getData(completeUrl, params, parentElement) {
     // struttura chiamata http con axios in GET
+    let clock;
     axios
         .get(completeUrl, { params })
-        .then((res) => res.data)
+        .then((res) => { let count = 0;
+            clock = setInterval(() => {
+            count++;
+            console.log(count)
+        }, 1000);
+            return res.data})
         .then((data) => {
             generatesNotes(parentElement, data, data.length);
+            clearInterval(clock);
             function generatesNotes(parentElement, data, dataLen) {
                 let template = "";
                 for (let i = 0; i < dataLen; i++) {
@@ -116,11 +123,18 @@ function getData(completeUrl, params, parentElement) {
 function triggerModalWindow(target, modalState) {
     // chiamo la funzione che gestisce l'escape btn
     triggerEscapeBtn(modalState);
+    // seleziono pin e figcaption della note target
+    const targetPin = target.querySelector(".pin");
+    const targetFigcaption = target.querySelector("figcaption");
     // se non ho la modale aperta allora aprila
     if (!modalState) {
         // aggiungo le classi in funzione della finestra modale
         document.body.classList.add(layover);
         target.classList.add(modal);
+        target.classList.add("hide-parent");
+        // in modale, faccio scomparire il pin e figcaption
+        targetPin.classList.add("d-none");
+        targetFigcaption.classList.add("d-none");
         // ritorno true alla variabile isModal (vedere invocazione)
         return true;
     }
@@ -129,6 +143,10 @@ function triggerModalWindow(target, modalState) {
         // rimuovo le classi in funzione della finestra modale
         document.body.classList.remove(layover);
         target.classList.remove(modal);
+        target.classList.remove("hide-parent");
+        // se non ho la modale, faccio apparire pin e figcaption
+        targetPin.classList.remove("d-none");
+        targetFigcaption.classList.remove("d-none");
         // ritorno false alla variabile isModal (vedere invocazione)
         return false;
     }
