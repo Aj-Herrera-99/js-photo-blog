@@ -6,7 +6,7 @@
 const _URL = "https://jsonplaceholder.typicode.com/";
 const _PHOTOS = "photos";
 const _KEY = "_limit";
-const _VALUE = 10;
+const _VALUE = "10";
 // important ids, classes, tags selections
 const notesWrapperClass = ".notes-wrapper";
 const noteClass = ".note";
@@ -37,9 +37,8 @@ handleMediaChange(toggleHover);
 // http request with axios, for generating notes
 const url = _URL;
 const resource = _PHOTOS;
-const params = {
-    _KEY: _VALUE,
-};
+const params = {};
+params[_KEY] = _VALUE;
 getData(url + resource, params, $notesWrapper);
 
 // =============================================================================
