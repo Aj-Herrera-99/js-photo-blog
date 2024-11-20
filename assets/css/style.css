@@ -12,10 +12,6 @@ img {
     width: 100%;
 }
 
-button {
-    all: unset;
-}
-
 :root {
     --header-height: 100px;
     --note-margin-inline: 10px;

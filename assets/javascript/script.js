@@ -8,8 +8,8 @@ const _RESOURCE = "photos";
 const _KEY = "_limit";
 const _VALUE = "2";
 // important ids, classes, tags selections
-const escapeId = "escape";
-const addId = "add";
+const escapeBtnId = "escape-btn";
+const addId = "add-btn";
 const notesWrapperClass = ".notes-wrapper";
 const noteClass = ".note";
 const loaderClass = ".loader";
@@ -27,7 +27,7 @@ const dNone = "d-none";
 // =============================================================================
 // DOM elements selection $prefix
 const $notesWrapper = document.querySelector(notesWrapperClass);
-const $escape = document.getElementById(escapeId);
+const $escapeBtn = document.getElementById(escapeBtnId);
 const $add = document.getElementById(addId);
 // other variables
 // for modal window and escape info message
@@ -83,7 +83,7 @@ $add.addEventListener("click", async function () {
     $notesWrapper.lastElementChild.scrollIntoView();
 });
 // escape button click event
-$escape.addEventListener("click", () => {
+$escapeBtn.addEventListener("click", () => {
     isModal = triggerModalWindow(document.querySelector(`.${modal}`), isModal);
 });
 // media query list change event
@@ -167,17 +167,17 @@ function triggerModalWindow(target, modalState) {
         // se non ho la modale aperta, compare l'escape message
         if (!modalState) {
             // escape message
-            $escape.classList.add(active);
+            $escapeBtn.classList.add(active);
             // dopo tot ms, il message scompare
             escTimeout = setTimeout(() => {
-                $escape.classList.remove(active);
+                $escapeBtn.classList.remove(active);
             }, 2000);
         }
         // se ho una modale aperta, rimuovo forzatamente il timeout che rimuove il message dopo tot ms
         else {
             clearTimeout(escTimeout);
             // rimuovo (usando una classe) il message a tempo zero
-            $escape.classList.remove(active);
+            $escapeBtn.classList.remove(active);
         }
     }
 }

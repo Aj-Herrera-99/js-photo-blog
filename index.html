@@ -14,11 +14,10 @@
         />
         <script src="https://cdn.jsdelivr.net/npm/axios@latest/dist/axios.min.js"></script>
         <script type="module" src="./assets/javascript/script.js"></script>
-        <link rel="stylesheet" href="./assets/css/style.css" />
         <link rel="stylesheet" href="./assets/css/utilities.css" />
-        <link rel="stylesheet" href="./assets/css/escape.css" />
+        <link rel="stylesheet" href="./assets/css/style.css" />
         <link rel="stylesheet" href="./assets/css/loader.css" />
-        <link rel="stylesheet" href="./assets/css/add.css" />
+        <link rel="stylesheet" href="./assets/css/button.css" />
         <title>Photo Blog</title>
     </head>
 
@@ -34,12 +33,16 @@
             </div>
         </main>
         <!-- ESCAPE BUTTON -->
-        <button id="escape" class="">
+        <button id="escape-btn" class="">
             Premi ESC o clicca sul post-it per uscire
         </button>
+        <div class="add-remove-wrapper d-flex flex-col">
+            <!-- ADD NOTE BUTTON -->
+             <button id="add-btn">Aggiungi un post-it!</button>
+             <!-- REMOVE NOTE BUTTON -->
+             <button id="remove-btn">Elimina un post-it!</button>
+        </div>
         <!-- LOADER -->
         <div class="loader active"></div>
-        <!-- ADD NOTE BUTTON -->
-         <button id="add">Aggiungi un post-it!</button>
     </body>
 </html>
