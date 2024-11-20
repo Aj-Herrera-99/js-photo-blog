@@ -32,8 +32,8 @@ let isModal = false;
 let escTimeout;
 // media query list on toggling all hover effects
 const toggleHover = window.matchMedia("(max-width: 992px)");
-// calling the listener function of hoverOff at run time
-handleHoverMedia(toggleHover);
+// run mediaQueryList listener function in run time
+handleMediaChange(toggleHover);
 // http request with axios, for generating notes
 const url = _URL;
 const resource = _PHOTOS;
@@ -56,14 +56,9 @@ window.addEventListener("keyup", (e) => {
     }
 });
 // media query list listener
-toggleHover.addEventListener("change", () =>
-    // se max_width < 992px entra nel primo ramo => togli la classe
-    // hoverOn a cui sono attaccati tutti gli hover della pagina
-    // senno riaggiungi la classe al body
-    this.matches
-        ? document.body.classList.remove(hoverOn)
-        : document.body.classList.add(hoverOn)
-);
+toggleHover.addEventListener("change", function () {
+    handleMediaChange(this);
+});
 
 // =============================================================================
 // ********************  EVENT HANDLERS  ************************************
@@ -71,6 +66,16 @@ toggleHover.addEventListener("change", () =>
 function handleNoteClick(e) {
     console.log(this);
     isModal = triggerModalWindow(this, isModal);
+}
+
+function handleMediaChange(x) {
+    // se max_width < 992px entra nel primo ramo => togli la classe
+    // hoverOn a cui sono attaccati tutti gli hover della pagina
+    // senno riaggiungi la classe al body
+    console.log(x);
+    x.matches
+        ? document.body.classList.remove(hoverOn)
+        : document.body.classList.add(hoverOn);
 }
 
 // =============================================================================
@@ -115,7 +120,7 @@ function triggerModalWindow(target, modalState) {
         target.classList.add(modal);
         // ritorno true alla variabile isModal (vedere invocazione)
         return true;
-    } 
+    }
     // se ho una modale aperta allora chiudila
     else {
         // rimuovo le classi in funzione della finestra modale
