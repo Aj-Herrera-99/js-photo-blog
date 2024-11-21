@@ -7,6 +7,7 @@ const _URL = "https://jsonplaceholder.typicode.com/";
 const _RESOURCE = "photos";
 const _KEY = "_limit";
 const _VALUE = 6;
+const _MAX_OBJECTS = 5000;
 // important ids, classes, tags selections
 const escapeModalBtnId = "escape-modal-btn";
 const addBtnId = "add-btn";
@@ -54,7 +55,6 @@ const resource = _RESOURCE;
 const params = {
     [_KEY]: isNaN(_VALUE) || _VALUE < 0 ? 0 : _VALUE,
 };
-// simulazione loader ( sicuramente da cambiare ) => dopo un tot prendo i dati della chiamata
 // Immediately Invoked Function Expressions (IIFE) to execute async await
 (async function () {
     // dati presi da una chiamata ajax
@@ -66,7 +66,7 @@ const params = {
         .querySelectorAll(noteClass)
         .forEach((note) => note.addEventListener("click", handleNoteClick));
 })();
-
+setInterval(()=> console.log("Test"), 1000);
 // =============================================================================
 // ********************  EVENT LISTENERS  ************************************
 // =============================================================================
@@ -81,8 +81,13 @@ $addBtn.addEventListener("click", async (e) => {
         notesDataSaved
     );
     buildTemplateFrom(myData, $notesWrapper);
-    $notesWrapper.lastElementChild.addEventListener("click", handleNoteClick);
-    $notesWrapper.lastElementChild.scrollIntoView();
+    if ($notesWrapper.childElementCount) {
+        $notesWrapper.lastElementChild.addEventListener(
+            "click",
+            handleNoteClick
+        );
+        $notesWrapper.lastElementChild.scrollIntoView();
+    }
 });
 // remove btn click event
 $removeBtn.addEventListener("click", function (e) {
@@ -179,8 +184,8 @@ function handleRemoveNote(e) {
 async function getData(completeUrl, params, saving) {
     try {
         const res = await axios.get(completeUrl, { params });
-        if (res.data.length >= 1000) {
-            throw new Error("Cannot fit more than 1000 objects in the page");
+        if (res.data.length > _MAX_OBJECTS) {
+            throw new Error(`Cannot request more than ${_MAX_OBJECTS} objects in the page`);
         }
         const data = await res.data;
         data.forEach((data) => saving.push(data));
