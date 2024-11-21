@@ -59,9 +59,6 @@ setTimeout(() => {
     document.body.classList.remove(layover);
     document.querySelector(loaderClass).classList.remove(active);
 }, 500);
-// =============================================================================
-// ********************  EVENT LISTENERS  ************************************
-// =============================================================================
 // Immediately Invoked Function Expressions (IIFE) to execute async await
 (async function () {
     // dati presi da una chiamata ajax
@@ -74,15 +71,9 @@ setTimeout(() => {
         .forEach((note) => note.addEventListener("click", handleNoteClick));
 })();
 
-// window keyup event
-window.addEventListener("keyup", (e) => {
-    if (e.key === "Escape" && isModal) {
-        isModal = triggerModalWindow(
-            document.querySelector(`.${modal}`),
-            isModal
-        );
-    }
-});
+// =============================================================================
+// ********************  EVENT LISTENERS  ************************************
+// =============================================================================
 // add btn click event
 $addBtn.addEventListener("click", async () => {
     let myData = await getData(
@@ -99,6 +90,7 @@ $addBtn.addEventListener("click", async () => {
 // remove btn click event
 $removeBtn.addEventListener("click", function (e) {
     e.stopPropagation();
+    trashMode = true;
     this.innerText = "Clicca sulla polaroid da rimuovere";
     this.disabled = true;
     $addBtn.classList.add(dNone);
@@ -106,7 +98,6 @@ $removeBtn.addEventListener("click", function (e) {
     this.classList.add(disabled);
     $header.classList.add(dNone);
     $main.style.marginTop = "0px";
-    trashMode = true;
     for (let note of $notesWrapper.children) {
         note.classList.add("constant-tilt-shake");
     }
@@ -115,6 +106,7 @@ $removeBtn.addEventListener("click", function (e) {
 // escape remove btn click event
 $escRemoveBtn.addEventListener("click", function (e) {
     e.stopPropagation();
+    trashMode = false;
     $removeBtn.innerText = "Rimuovi una polaroid!";
     $removeBtn.disabled = false;
     $addBtn.classList.remove(dNone);
@@ -125,12 +117,26 @@ $escRemoveBtn.addEventListener("click", function (e) {
     for (let note of $notesWrapper.children) {
         note.classList.remove("constant-tilt-shake");
     }
-    trashMode = false;
     window.removeEventListener("click", handleRemoveNote);
 });
 // escape btn click event
 $escapeBtn.addEventListener("click", () => {
-    isModal = triggerModalWindow(document.querySelector(`.${modal}`), isModal);
+    isModal = triggerModalWindow(
+        document.querySelector(`.${modal}`),
+        isModal,
+        trashMode
+    );
+});
+// window keyup event for escaping modal view
+window.addEventListener("keyup", (e) => {
+    // solo se ho cliccato ESC e l'overlay è attivo fai questo
+    if (e.key === "Escape" && isModal) {
+        isModal = triggerModalWindow(
+            document.querySelector(`.${modal}`),
+            isModal,
+            trashMode
+        );
+    }
 });
 // media query list change event
 toggleHover.addEventListener("change", function () {
@@ -141,7 +147,7 @@ toggleHover.addEventListener("change", function () {
 // ********************  EVENT HANDLERS  ************************************
 // =============================================================================
 function handleNoteClick(e) {
-    isModal = triggerModalWindow(this, isModal);
+    isModal = triggerModalWindow(this, isModal, trashMode);
 }
 
 function handleMediaChange(x) {
@@ -165,6 +171,7 @@ function handleRemoveNote(e) {
         if (indexElRemove !== -1) {
             notesDataSaved.splice(indexElRemove, 1);
         }
+        console.log(notesDataSaved);
         target.remove();
     }
 }
@@ -181,6 +188,8 @@ async function getData(completeUrl, params, saving) {
         return data;
     } catch (e) {
         console.error(e);
+    } finally {
+        setTimeout;
     }
 }
 
@@ -196,12 +205,17 @@ function buildTemplateFrom(data, wrapperElement) {
     wrapperElement.insertAdjacentHTML("beforeend", template);
 }
 
-function triggerModalWindow(target, modalState) {
+function triggerModalWindow(target, modalState, trashMode) {
+    // trashMode = false default
+    // trashMode è la var passata come param gestita da remove e escRemove btn
+    // trashMode = true solo quando clicco remove btn
+    // e entro dunque in modalita "rimuovi elemento" e ritorno false
+    // per non far partire l'animazione della modale
+    // escRemove esce dalla mod "rimuovi el" e resetta trashMode = false
+    // l'animazione puo partire
     if (trashMode) {
         return false;
     }
-    // chiamo la funzione che gestisce l'escape btn
-    triggerEscapeBtn(modalState);
     // seleziono pin e figcaption della note target
     const targetPin = target.querySelector(pinClass);
     const targetFigcaption = target.querySelector(figcaptionTag);
@@ -210,10 +224,13 @@ function triggerModalWindow(target, modalState) {
         // aggiungo le classi in funzione della finestra modale
         document.body.classList.add(layover);
         target.classList.add(modal);
-        target.classList.add(hideParent);
         // in modale, faccio scomparire il pin e figcaption
+        // e la cornice (il parent)
+        target.classList.add(hideParent);
         targetPin.classList.add(dNone);
         targetFigcaption.classList.add(dNone);
+        // chiamo la funzione che gestisce l'animazione di escape btn
+        animationEscapeBtn(modalState);
         // ritorno true alla variabile isModal (vedere invocazione)
         return true;
     }
@@ -222,15 +239,17 @@ function triggerModalWindow(target, modalState) {
         // rimuovo le classi in funzione della finestra modale
         document.body.classList.remove(layover);
         target.classList.remove(modal);
+        // se non ho la modale, faccio riapparire pin e figcaption e la cornice
         target.classList.remove(hideParent);
-        // se non ho la modale, faccio apparire pin e figcaption
         targetPin.classList.remove(dNone);
         targetFigcaption.classList.remove(dNone);
+        // chiamo la funzione che gestisce l'animazione di escape btn
+        animationEscapeBtn(modalState);
         // ritorno false alla variabile isModal (vedere invocazione)
         return false;
     }
-    // funzione interna usata solo dalla funzione esterna
-    function triggerEscapeBtn(modalState) {
+    // funzione interna usata solo qui
+    function animationEscapeBtn(modalState) {
         // se non ho la modale aperta, compare l'escape message
         if (!modalState) {
             // escape message
