@@ -26,6 +26,7 @@ const active = "active";
 const hoverOn = "hover-on";
 const hideParent = "hide-parent";
 const dNone = "d-none";
+const disabled = "disabled";
 // =============================================================================
 // ******************* STARTING POINT ******************************
 // =============================================================================
@@ -102,7 +103,7 @@ $removeBtn.addEventListener("click", function (e) {
     this.disabled = true;
     $addBtn.classList.add(dNone);
     $escRemoveBtn.classList.remove(dNone);
-    this.classList.add("disabled");
+    this.classList.add(disabled);
     $header.classList.add(dNone);
     $main.style.marginTop = "0px";
     trashMode = true;
@@ -118,7 +119,7 @@ $escRemoveBtn.addEventListener("click", function (e) {
     $removeBtn.disabled = false;
     $addBtn.classList.remove(dNone);
     this.classList.add(dNone);
-    $removeBtn.classList.remove("disabled");
+    $removeBtn.classList.remove(disabled);
     $header.classList.remove(dNone);
     $main.style.removeProperty("margin-top");
     for (let note of $notesWrapper.children) {
