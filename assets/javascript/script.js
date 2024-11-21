@@ -62,14 +62,24 @@ const params = {
     // costruisco template a partire dai dati ricevuti e li inserisco in un contenitore
     buildTemplateFrom(myData, $notesWrapper);
     // notes click event
-    $notesWrapper
-        .querySelectorAll(noteClass)
-        .forEach((note) => note.addEventListener("click", handleNoteClick));
+    // $notesWrapper
+    //     .querySelectorAll(noteClass)
+    //     .forEach((note) => note.addEventListener("click", handleNoteClick));
 })();
-setInterval(()=> console.log("Test"), 1000);
+// setInterval(()=> console.log("Test"), 1000); PROVA ASYNC
 // =============================================================================
 // ********************  EVENT LISTENERS  ************************************
 // =============================================================================
+// card wrapper click event delegation from note
+$notesWrapper.addEventListener("click", function (e) {
+    // il target cerca l elemento .note piu vicino ( se ce )
+    let note = e.target.closest(noteClass); 
+    if (!note) return; 
+    if (!this.contains(note)) return; 
+    note.scrollIntoView();
+    // faccio partire l'handler sul .note piu vicino al target
+    handleNoteClick(note); 
+});
 // add btn click event
 $addBtn.addEventListener("click", async (e) => {
     e.stopPropagation();
@@ -82,10 +92,6 @@ $addBtn.addEventListener("click", async (e) => {
     );
     buildTemplateFrom(myData, $notesWrapper);
     if ($notesWrapper.childElementCount) {
-        $notesWrapper.lastElementChild.addEventListener(
-            "click",
-            handleNoteClick
-        );
         $notesWrapper.lastElementChild.scrollIntoView();
     }
 });
@@ -148,8 +154,8 @@ toggleHover.addEventListener("change", function () {
 // =============================================================================
 // ********************  EVENT HANDLERS  ************************************
 // =============================================================================
-function handleNoteClick(e) {
-    isModal = triggerModalWindow(this, isModal, trashMode);
+function handleNoteClick(target) {
+    isModal = triggerModalWindow(target, isModal, trashMode);
 }
 
 function handleMediaChange(x) {
@@ -185,7 +191,9 @@ async function getData(completeUrl, params, saving) {
     try {
         const res = await axios.get(completeUrl, { params });
         if (res.data.length > _MAX_OBJECTS) {
-            throw new Error(`Cannot request more than ${_MAX_OBJECTS} objects in the page`);
+            throw new Error(
+                `Cannot request more than ${_MAX_OBJECTS} objects in the page`
+            );
         }
         const data = await res.data;
         data.forEach((data) => saving.push(data));
