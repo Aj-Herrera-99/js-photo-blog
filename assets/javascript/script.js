@@ -6,7 +6,7 @@ import random from "./utilities.js";
 const _URL = "https://jsonplaceholder.typicode.com/";
 const _RESOURCE = "photos";
 const _KEY = "_limit";
-const _VALUE = 10;
+const _VALUE = 6;
 // important ids, classes, tags selections
 const escapeModalBtnId = "escape-modal-btn";
 const addBtnId = "add-btn";
@@ -52,7 +52,7 @@ handleMediaChange(toggleHover);
 const url = _URL;
 const resource = _RESOURCE;
 const params = {
-    [_KEY]: (isNaN(_VALUE) || _VALUE < 0) ? 0 : _VALUE,
+    [_KEY]: isNaN(_VALUE) || _VALUE < 0 ? 0 : _VALUE,
 };
 // simulazione loader ( sicuramente da cambiare ) => dopo un tot prendo i dati della chiamata
 // Immediately Invoked Function Expressions (IIFE) to execute async await
@@ -179,33 +179,40 @@ function handleRemoveNote(e) {
 async function getData(completeUrl, params, saving) {
     try {
         const res = await axios.get(completeUrl, { params });
-        if(res.data.length >= 1000){
+        if (res.data.length >= 1000) {
             throw new Error("Cannot fit more than 1000 objects in the page");
         }
         const data = await res.data;
         data.forEach((data) => saving.push(data));
         console.log(saving);
+        // loader animation
         document.body.classList.remove(layover);
         document.querySelector(loaderClass).classList.remove(active);
         return data;
     } catch (e) {
         console.error(e);
+        // loader animation
         document.body.classList.remove(layover);
         document.querySelector(loaderClass).classList.remove(active);
+        // return an empty array
         return [];
     }
 }
 
 function buildTemplateFrom(data, wrapperElement) {
-    let template = "";
-    for (let i = 0; i < data.length; i++) {
-        template += `<figure class="note d-flex flex-wrap" id="${data[i].id}" albumid="${data[i].albumId}">
+    if (data) {
+        let template = "";
+        for (let i = 0; i < data.length; i++) {
+            template += `<figure class="note d-flex flex-wrap" id="${data[i].id}" albumid="${data[i].albumId}">
                     <div class="pin"><img src="./assets/img/pin.svg" alt="pin"></div>
                     <img class="note-image" src="${data[i].url}" alt="img">
                     <figcaption class="d-flex items-center text-capitalize">${data[i].title}</figcaption>
                 </figure>   `;
+        }
+        wrapperElement.insertAdjacentHTML("beforeend", template);
+    } else {
+        console.error("No data found");
     }
-    wrapperElement.insertAdjacentHTML("beforeend", template);
 }
 
 function triggerModalWindow(target, modalState, trashMode) {
