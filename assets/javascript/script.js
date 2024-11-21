@@ -6,7 +6,7 @@ import random from "./utilities.js";
 const _URL = "https://jsonplaceholder.typicode.com/";
 const _RESOURCE = "photos";
 const _KEY = "_limit";
-const _VALUE = "6";
+const _VALUE = 10;
 // important ids, classes, tags selections
 const escapeModalBtnId = "escape-modal-btn";
 const addBtnId = "add-btn";
@@ -52,13 +52,9 @@ handleMediaChange(toggleHover);
 const url = _URL;
 const resource = _RESOURCE;
 const params = {
-    [_KEY]: _VALUE,
+    [_KEY]: (isNaN(_VALUE) || _VALUE < 0) ? 0 : _VALUE,
 };
 // simulazione loader ( sicuramente da cambiare ) => dopo un tot prendo i dati della chiamata
-setTimeout(() => {
-    document.body.classList.remove(layover);
-    document.querySelector(loaderClass).classList.remove(active);
-}, 500);
 // Immediately Invoked Function Expressions (IIFE) to execute async await
 (async function () {
     // dati presi da una chiamata ajax
@@ -183,14 +179,20 @@ function handleRemoveNote(e) {
 async function getData(completeUrl, params, saving) {
     try {
         const res = await axios.get(completeUrl, { params });
+        if(res.data.length >= 1000){
+            throw new Error("Cannot fit more than 1000 objects in the page");
+        }
         const data = await res.data;
         data.forEach((data) => saving.push(data));
         console.log(saving);
+        document.body.classList.remove(layover);
+        document.querySelector(loaderClass).classList.remove(active);
         return data;
     } catch (e) {
         console.error(e);
-    } finally {
-        setTimeout;
+        document.body.classList.remove(layover);
+        document.querySelector(loaderClass).classList.remove(active);
+        return [];
     }
 }
 
