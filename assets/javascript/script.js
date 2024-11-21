@@ -62,9 +62,8 @@ setTimeout(() => {
 // =============================================================================
 // ********************  EVENT LISTENERS  ************************************
 // =============================================================================
-// window events
-// al caricamento della pagina e di tutte le sue dipendenze invochi il listener
-window.addEventListener("load", async function () {
+// Immediately Invoked Function Expressions (IIFE) to execute async await
+(async function () {
     // dati presi da una chiamata ajax
     let myData = await getData(url + resource, params, notesDataSaved);
     // costruisco template a partire dai dati ricevuti e li inserisco in un contenitore
@@ -73,8 +72,9 @@ window.addEventListener("load", async function () {
     $notesWrapper
         .querySelectorAll(noteClass)
         .forEach((note) => note.addEventListener("click", handleNoteClick));
-});
+})();
 
+// window keyup event
 window.addEventListener("keyup", (e) => {
     if (e.key === "Escape" && isModal) {
         isModal = triggerModalWindow(
