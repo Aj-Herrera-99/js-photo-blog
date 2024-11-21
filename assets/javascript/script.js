@@ -8,7 +8,7 @@ const _RESOURCE = "photos";
 const _KEY = "_limit";
 const _VALUE = "6";
 // important ids, classes, tags selections
-const escapeBtnId = "escape-btn";
+const escapeModalBtnId = "escape-modal-btn";
 const addBtnId = "add-btn";
 const removeBtnId = "remove-btn";
 const escRemoveBtnId = "escape-remove-btn";
@@ -34,7 +34,7 @@ const disabled = "disabled";
 const $header = document.querySelector(headerTag);
 const $main = document.querySelector(mainTag);
 const $notesWrapper = document.querySelector(notesWrapperClass);
-const $escapeBtn = document.getElementById(escapeBtnId);
+const $escapeModalBtn = document.getElementById(escapeModalBtnId);
 const $addBtn = document.getElementById(addBtnId);
 const $removeBtn = document.getElementById(removeBtnId);
 const $escRemoveBtn = document.getElementById(escRemoveBtnId);
@@ -75,7 +75,8 @@ setTimeout(() => {
 // ********************  EVENT LISTENERS  ************************************
 // =============================================================================
 // add btn click event
-$addBtn.addEventListener("click", async () => {
+$addBtn.addEventListener("click", async (e) => {
+    e.stopPropagation();
     let myData = await getData(
         url + resource,
         {
@@ -119,8 +120,8 @@ $escRemoveBtn.addEventListener("click", function (e) {
     }
     window.removeEventListener("click", handleRemoveNote);
 });
-// escape btn click event
-$escapeBtn.addEventListener("click", () => {
+// escape modal btn click event
+$escapeModalBtn.addEventListener("click", () => {
     isModal = triggerModalWindow(
         document.querySelector(`.${modal}`),
         isModal,
@@ -230,7 +231,7 @@ function triggerModalWindow(target, modalState, trashMode) {
         targetPin.classList.add(dNone);
         targetFigcaption.classList.add(dNone);
         // chiamo la funzione che gestisce l'animazione di escape btn
-        animationEscapeBtn(modalState);
+        animationEscapeModalBtn(modalState);
         // ritorno true alla variabile isModal (vedere invocazione)
         return true;
     }
@@ -244,26 +245,26 @@ function triggerModalWindow(target, modalState, trashMode) {
         targetPin.classList.remove(dNone);
         targetFigcaption.classList.remove(dNone);
         // chiamo la funzione che gestisce l'animazione di escape btn
-        animationEscapeBtn(modalState);
+        animationEscapeModalBtn(modalState);
         // ritorno false alla variabile isModal (vedere invocazione)
         return false;
     }
     // funzione interna usata solo qui
-    function animationEscapeBtn(modalState) {
+    function animationEscapeModalBtn(modalState) {
         // se non ho la modale aperta, compare l'escape message
         if (!modalState) {
             // escape message
-            $escapeBtn.classList.add(active);
+            $escapeModalBtn.classList.add(active);
             // dopo tot ms, il message scompare
             escTimeout = setTimeout(() => {
-                $escapeBtn.classList.remove(active);
+                $escapeModalBtn.classList.remove(active);
             }, 2000);
         }
         // se ho una modale aperta, rimuovo forzatamente il timeout che rimuove il message dopo tot ms
         else {
             clearTimeout(escTimeout);
             // rimuovo (usando una classe) il message a tempo zero
-            $escapeBtn.classList.remove(active);
+            $escapeModalBtn.classList.remove(active);
         }
     }
 }

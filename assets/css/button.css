@@ -10,7 +10,7 @@ button {
 }
 
 /** ESCAPE  */
-#escape-btn {
+#escape-modal-btn {
     position: fixed;
     top: -50px;
     left: 50%;
@@ -20,7 +20,7 @@ button {
     transition: all 0.2s ease;
 }
 
-#escape-btn.active {
+#escape-modal-btn.active {
     top: 20px;
     animation: bounce 1s ease 1;
     animation-delay: 0.2s;
