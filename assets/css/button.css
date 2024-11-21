@@ -42,13 +42,19 @@ button {
 
 .hover-on #add-btn:hover,
 .hover-on #remove-btn:hover,
-.hover-on #escape-remove-btn,
+.hover-on #escape-remove-btn:hover,
 #add-btn:active,
 #remove-btn:active,
 #escape-remove-btn:active {
     background: rgba(138, 82, 22, 0.7);
     color: rgba(255, 255, 255, 1);
     scale: 105%;
+}
+
+#add-btn:active,
+#remove-btn:active,
+#escape-remove-btn:active {
+    scale: 108% !important;
 }
 
 button.disabled {
