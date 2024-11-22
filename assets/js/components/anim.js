@@ -9,6 +9,7 @@ export function pageLoader() {
 }
 
 export const popup = (() => {
+    console.log("popup");
     let escTimeout;
     return (popup, makeVisible) => {
         if (makeVisible) {
@@ -49,18 +50,33 @@ export function cardOverlay(target, makeOverlay) {
     }
 }
 
-export function cardTiltShake(cards) {
-    if (
-        cards.constructor.name === "HTMLCollection" ||
-        cards.constructor.name === "NodeList"
-    ) {
-        for (const card of cards) {
-            card.classList.toggle(domConfig.constTiltShake);
+export function cardTiltShake(cards, makeShake) {
+    if (makeShake) {
+        if (
+            cards.constructor.name === "HTMLCollection" ||
+            cards.constructor.name === "NodeList"
+        ) {
+            for (const card of cards) {
+                card.classList.add(domConfig.constTiltShake);
+            }
+        } else if (cards.constructor.name.includes("HTML")) {
+            cards.classList.add(domConfig.constTiltShake);
+        } else {
+            console.error("Data is not an HTML element");
         }
-    } else if (cards.constructor.name.includes("HTML")) {
-        cards.classList.toggle(domConfig.constTiltShake);
-    } else {
-        console.error("Data is not an HTML element");
+    }  else {
+        if (
+            cards.constructor.name === "HTMLCollection" ||
+            cards.constructor.name === "NodeList"
+        ) {
+            for (const card of cards) {
+                card.classList.remove(domConfig.constTiltShake);
+            }
+        } else if (cards.constructor.name.includes("HTML")) {
+            cards.classList.remove(domConfig.constTiltShake);
+        } else {
+            console.error("Data is not an HTML element");
+        }
     }
 }
 
