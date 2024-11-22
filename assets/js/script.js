@@ -1,13 +1,8 @@
-import { getRndInteger as random } from "./utilities.js";
+// import { getRndInteger as random } from "./utilities.js";
+import { globals, utils, api, anim } from "./bundle.js";
 // =============================================================================
 // ********************** INITIAL SETTING ***********************************
 // =============================================================================
-// globals
-const _RESOURCE = "photos";
-const _KEY = "_limit";
-const _URL = "https://jsonplaceholder.typicode.com/";
-const _VALUE = 6;
-const _MAX_OBJECTS = 5000;
 // important ids, classes, tags selections
 const popupModalBtnId = "popup-modal-btn";
 const addBtnId = "add-btn";
@@ -35,25 +30,30 @@ const disabled = "disabled";
 const $header = document.querySelector(headerTag);
 const $main = document.querySelector(mainTag);
 const $notesWrapper = document.querySelector(notesWrapperClass);
+const notes = $notesWrapper.querySelectorAll(noteClass);
 const $addBtn = document.getElementById(addBtnId);
 const $removeBtn = document.getElementById(removeBtnId);
 const $escRemoveBtn = document.getElementById(escRemoveBtnId);
 // other variables
-const notesDataSaved = [];
+let notesDataSaved = [];
 // media query list on toggling all hover effects
 const toggleHover = window.matchMedia("(max-width: 1200px)");
 // run mediaQueryList listener function in run time
 handleMediaChange(toggleHover);
 // http request with axios, for generating notes
-const url = _URL;
-const resource = _RESOURCE;
+const url = globals.url;
+const resource = globals.resource;
 const params = {
-    [_KEY]: isNaN(_VALUE) || _VALUE < 0 ? 0 : _VALUE,
+    [globals.key]:
+        isNaN(globals.value) || globals.value < 0 ? 0 : globals.value,
 };
 // Immediately Invoked Function Expressions (IIFE) to execute async await
 (async function () {
+    anim.pageLoader();
     // dati presi da una chiamata ajax
-    let myData = await getData(url + resource, params, notesDataSaved);
+    let myData = await api.getData(url + resource, params);
+    notesDataSaved = [...notesDataSaved, ...myData];
+    console.log(notesDataSaved);
     // costruisco template a partire dai dati ricevuti e li inserisco in un contenitore
     buildTemplateFrom(myData, $notesWrapper);
 })();
@@ -65,13 +65,14 @@ $notesWrapper.addEventListener("click", handleNoteClick);
 // add btn click event
 $addBtn.addEventListener("click", async (e) => {
     e.stopPropagation();
-    let myData = await getData(
+    let myData = await api.getData(
         url + resource,
         {
-            id: random(1, 100).toString(),
+            id: utils.getRndInteger(1, 100).toString(),
         },
         notesDataSaved
     );
+    notesDataSaved = [...notesDataSaved, ...myData];
     buildTemplateFrom(myData, $notesWrapper);
     if ($notesWrapper.childElementCount) {
         $notesWrapper.lastElementChild.scrollIntoView();
@@ -87,9 +88,9 @@ $removeBtn.addEventListener("click", function (e) {
     this.classList.add(disabled);
     $header.classList.add(dNone);
     $main.style.marginTop = "0px";
-    for (let note of $notesWrapper.children) {
-        note.classList.add("constant-tilt-shake");
-    }
+
+    anim.cardTiltShake($notesWrapper.children);
+
     $notesWrapper.removeEventListener("click", handleNoteClick);
     $main.addEventListener("click", handleRemoveNote);
 });
@@ -103,9 +104,9 @@ $escRemoveBtn.addEventListener("click", function (e) {
     $removeBtn.classList.remove(disabled);
     $header.classList.remove(dNone);
     $main.style.removeProperty("margin-top");
-    for (let note of $notesWrapper.children) {
-        note.classList.remove("constant-tilt-shake");
-    }
+    
+    anim.cardTiltShake($notesWrapper.children);
+
     $notesWrapper.addEventListener("click", handleNoteClick);
     $main.removeEventListener("click", handleRemoveNote);
 });
@@ -190,82 +191,23 @@ const triggerModalWindow = (() => {
     const popupModalBtn = document.getElementById(popupModalBtnId);
     return (target) => {
         console.log("closure");
-        // seleziono pin e figcaption della note target
-        const targetPin = target.querySelector(pinClass);
-        const targetFigcaption = target.querySelector(figcaptionTag);
         // se non ho la modale aperta allora aprila
         if (!isModal) {
             isModal = true;
-            popupAnim(popupModalBtn, isModal);
-            // aggiungo le classi in funzione della finestra modale
-            document.body.classList.add(layover);
-            target.classList.add(modal);
-            // in modale, faccio scomparire il pin e figcaption
-            // e la cornice (il parent)
-            target.classList.add(hideParent);
-            targetPin.classList.add(dNone);
-            targetFigcaption.classList.add(dNone);
+            anim.popup(popupModalBtn, isModal);
+            anim.cardOverlay(target, isModal);
             return isModal;
         }
         // se ho una modale aperta allora chiudila
         else {
             isModal = false;
             console.log("Modal off");
-            popupAnim(popupModalBtn, isModal);
-            // rimuovo le classi in funzione della finestra modale
-            document.body.classList.remove(layover);
-            target.classList.remove(modal);
-            // se non ho la modale, faccio riapparire pin e figcaption e la cornice
-            target.classList.remove(hideParent);
-            targetPin.classList.remove(dNone);
-            targetFigcaption.classList.remove(dNone);
+            anim.popup(popupModalBtn, isModal);
+            anim.cardOverlay(target, isModal);
             return isModal;
         }
     };
 })();
-
-const popupAnim = (() => {
-    let escTimeout;
-    return (popup, makeVisible) => {
-        if (makeVisible) {
-            // popup message
-            popup.classList.add(active);
-            // dopo tot ms, il message scompare
-            escTimeout = setTimeout(() => {
-                popup.classList.remove(active);
-            }, 2000);
-        } else {
-            // rimuovo (usando una classe) il message a tempo zero
-            clearTimeout(escTimeout);
-            popup.classList.remove(active);
-        }
-    };
-})();
-
-async function getData(completeUrl, params, saving) {
-    try {
-        const res = await axios.get(completeUrl, { params });
-        if (res.data.length > _MAX_OBJECTS) {
-            throw new Error(
-                `Cannot request more than ${_MAX_OBJECTS} objects in the page`
-            );
-        }
-        const data = await res.data;
-        data.forEach((data) => saving.push(data));
-        console.log(saving);
-        // loader animation
-        document.body.classList.remove(layover);
-        document.querySelector(loaderClass).classList.remove(active);
-        return data;
-    } catch (e) {
-        console.error(e);
-        // loader animation
-        document.body.classList.remove(layover);
-        document.querySelector(loaderClass).classList.remove(active);
-        // return an empty array
-        return [];
-    }
-}
 
 function buildTemplateFrom(data, wrapperElement) {
     if (data) {
