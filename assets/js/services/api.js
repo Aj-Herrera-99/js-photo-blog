@@ -1,4 +1,4 @@
-import { globals } from "../bundle.js";
+import { globals } from "../modules/bundle.js";
 
 export async function getData(completeUrl, params) {
     try {

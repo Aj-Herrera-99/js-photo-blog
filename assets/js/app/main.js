@@ -1,46 +1,15 @@
 // import { getRndInteger as random } from "./utilities.js";
-import { globals, utils, api, anim } from "./bundle.js";
-// =============================================================================
-// ********************** INITIAL SETTING ***********************************
-// =============================================================================
-// important ids, classes, tags selections
-const popupModalBtnId = "popup-modal-btn";
-const addBtnId = "add-btn";
-const removeBtnId = "remove-btn";
-const escRemoveBtnId = "escape-remove-btn";
-const notesWrapperClass = ".notes-wrapper";
-const noteClass = ".note";
-const loaderClass = ".loader";
-const pinClass = ".pin";
-const figcaptionTag = "figcaption";
-const headerTag = "header";
-const mainTag = "main";
-// css classes
-const layover = "layover";
-const modal = "modal";
-const active = "active";
-const hoverOn = "hover-on";
-const hideParent = "hide-parent";
-const dNone = "d-none";
-const disabled = "disabled";
-// =============================================================================
-// ********************** STARTING POINT ***********************************
-// =============================================================================
+import { globals, domConfig, utils, api, anim, cardBtn, tempBuilder } from "../modules/bundle.js";
+
 // DOM elements selection $prefix
-const $header = document.querySelector(headerTag);
-const $main = document.querySelector(mainTag);
-const $notesWrapper = document.querySelector(notesWrapperClass);
-const notes = $notesWrapper.querySelectorAll(noteClass);
-const $addBtn = document.getElementById(addBtnId);
-const $removeBtn = document.getElementById(removeBtnId);
-const $escRemoveBtn = document.getElementById(escRemoveBtnId);
+const $header = document.querySelector(domConfig.headerTag);
+const $main = document.querySelector(domConfig.mainTag);
+const $notesWrapper = document.querySelector(domConfig.notesWrapperClass);
+const $addBtn = document.getElementById(domConfig.addBtnId);
+const $removeBtn = document.getElementById(domConfig.removeBtnId);
+const $escRemoveBtn = document.getElementById(domConfig.escRemoveBtnId);
 // other variables
 let notesDataSaved = [];
-// media query list on toggling all hover effects
-const toggleHover = window.matchMedia("(max-width: 1200px)");
-// run mediaQueryList listener function in run time
-handleMediaChange(toggleHover);
-// http request with axios, for generating notes
 const url = globals.url;
 const resource = globals.resource;
 const params = {
@@ -55,7 +24,7 @@ const params = {
     notesDataSaved = [...notesDataSaved, ...myData];
     console.log(notesDataSaved);
     // costruisco template a partire dai dati ricevuti e li inserisco in un contenitore
-    buildTemplateFrom(myData, $notesWrapper);
+    tempBuilder.buildTemplateFrom(myData, $notesWrapper);
 })();
 // =============================================================================
 // ********************  EVENT LISTENERS  ************************************
@@ -65,15 +34,11 @@ $notesWrapper.addEventListener("click", handleNoteClick);
 // add btn click event
 $addBtn.addEventListener("click", async (e) => {
     e.stopPropagation();
-    let myData = await api.getData(
-        url + resource,
-        {
-            id: utils.getRndInteger(1, 100).toString(),
-        },
-        notesDataSaved
-    );
+    let myData = await api.getData(url + resource, {
+        id: utils.getRndInteger(1, 100).toString(),
+    });
     notesDataSaved = [...notesDataSaved, ...myData];
-    buildTemplateFrom(myData, $notesWrapper);
+    tempBuilder.buildTemplateFrom(myData, $notesWrapper);
     if ($notesWrapper.childElementCount) {
         $notesWrapper.lastElementChild.scrollIntoView();
     }
@@ -81,39 +46,20 @@ $addBtn.addEventListener("click", async (e) => {
 // remove btn click event
 $removeBtn.addEventListener("click", function (e) {
     e.stopPropagation();
-    this.innerText = "Clicca sulla polaroid da rimuovere";
-    this.disabled = true;
-    $addBtn.classList.add(dNone);
-    $escRemoveBtn.classList.remove(dNone);
-    this.classList.add(disabled);
-    $header.classList.add(dNone);
-    $main.style.marginTop = "0px";
-
+    cardBtn.removeMode(true);
     anim.cardTiltShake($notesWrapper.children);
-
+    anim.hideElement($header, true);
     $notesWrapper.removeEventListener("click", handleNoteClick);
     $main.addEventListener("click", handleRemoveNote);
 });
 // escape remove btn click event
 $escRemoveBtn.addEventListener("click", function (e) {
     e.stopPropagation();
-    $removeBtn.innerText = "Rimuovi una polaroid!";
-    $removeBtn.disabled = false;
-    $addBtn.classList.remove(dNone);
-    this.classList.add(dNone);
-    $removeBtn.classList.remove(disabled);
-    $header.classList.remove(dNone);
-    $main.style.removeProperty("margin-top");
-    
+    cardBtn.removeMode(false);
     anim.cardTiltShake($notesWrapper.children);
-
+    anim.hideElement($header, false);
     $notesWrapper.addEventListener("click", handleNoteClick);
     $main.removeEventListener("click", handleRemoveNote);
-});
-
-// media query list change event
-toggleHover.addEventListener("change", function () {
-    handleMediaChange(this);
 });
 
 // =============================================================================
@@ -121,12 +67,12 @@ toggleHover.addEventListener("change", function () {
 // =============================================================================
 function handleNoteClick(e) {
     // il target cerca l elemento .note piu vicino ( se ce )
-    let note = e.target.closest(noteClass);
+    let note = e.target.closest(domConfig.noteClass);
     if (!note) return;
     if (!this.contains(note)) return;
     note.scrollIntoView();
     // escape modal btn click event
-    const popupModalBtn = document.getElementById(popupModalBtnId);
+    const popupModalBtn = document.getElementById(domConfig.popupModalBtnId);
     // invoco funzione che gestisce la finestra modale prendendo
     // come target note
     // se il ritorno è true (apro modale), aggiungo ascoltatori
@@ -143,10 +89,10 @@ function handleNoteClick(e) {
 
 function handleEscapeModal(e) {
     console.log("test");
-    const popupModalBtn = document.getElementById(popupModalBtnId);
+    const popupModalBtn = document.getElementById(domConfig.popupModalBtnId);
     if (e.currentTarget === popupModalBtn || e.key === "Escape") {
         console.log("test");
-        const modalNote = document.querySelector(`.${modal}`);
+        const modalNote = document.querySelector(`.${domConfig.modal}`);
         if (!modalNote) return;
         if (!document.contains(modalNote)) return;
         if (!triggerModalWindow(modalNote)) {
@@ -156,18 +102,8 @@ function handleEscapeModal(e) {
     }
 }
 
-function handleMediaChange(x) {
-    // se max_width < 992px entra nel primo ramo => togli la classe
-    // hoverOn a cui sono attaccati tutti gli hover della pagina
-    // senno riaggiungi la classe al body
-    console.log(x);
-    x.matches
-        ? document.body.classList.remove(hoverOn)
-        : document.body.classList.add(hoverOn);
-}
-
 function handleRemoveNote(e) {
-    const target = e.target.closest(noteClass);
+    const target = e.target.closest(domConfig.noteClass);
     if (target) {
         const indexElRemove = notesDataSaved.findIndex(
             (el) =>
@@ -182,13 +118,10 @@ function handleRemoveNote(e) {
     }
 }
 
-// =============================================================================
-//! ********************  IIFEs - CLOSURES - FUNCTIONS  ***********************
-// =============================================================================
 const triggerModalWindow = (() => {
     console.log("funzione esterna");
     let isModal = false;
-    const popupModalBtn = document.getElementById(popupModalBtnId);
+    const popupModalBtn = document.getElementById(domConfig.popupModalBtnId);
     return (target) => {
         console.log("closure");
         // se non ho la modale aperta allora aprila
@@ -209,18 +142,3 @@ const triggerModalWindow = (() => {
     };
 })();
 
-function buildTemplateFrom(data, wrapperElement) {
-    if (data) {
-        let template = "";
-        for (let i = 0; i < data.length; i++) {
-            template += `<figure class="note d-flex flex-wrap" id="${data[i].id}" albumid="${data[i].albumId}">
-                    <div class="pin"><img src="./assets/img/pin.svg" alt="pin"></div>
-                    <img class="note-image" src="${data[i].url}" alt="img">
-                    <figcaption class="d-flex items-center text-capitalize">${data[i].title}</figcaption>
-                </figure>   `;
-        }
-        wrapperElement.insertAdjacentHTML("beforeend", template);
-    } else {
-        console.error("No data found");
-    }
-}

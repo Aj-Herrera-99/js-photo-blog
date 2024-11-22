@@ -1,4 +1,4 @@
-import { domConfig } from "../bundle.js";
+import { domConfig } from "../modules/bundle.js";
 
 export function pageLoader() {
     // loader animation
@@ -49,7 +49,7 @@ export function cardOverlay(target, makeOverlay) {
     }
 }
 
-export function cardTiltShake(cards, makeShake) {
+export function cardTiltShake(cards) {
     if (
         cards.constructor.name === "HTMLCollection" ||
         cards.constructor.name === "NodeList"
@@ -57,10 +57,24 @@ export function cardTiltShake(cards, makeShake) {
         for (const card of cards) {
             card.classList.toggle(domConfig.constTiltShake);
         }
-    }
-    else if(cards.constructor.name.includes("HTML")){
+    } else if (cards.constructor.name.includes("HTML")) {
         cards.classList.toggle(domConfig.constTiltShake);
     } else {
         console.error("Data is not an HTML element");
+    }
+}
+
+export function hideElement(element, hide) {
+    const nextSib = element.nextElementSibling;
+    if (hide) {
+        element.classList.add(domConfig.dNone);
+        if (nextSib) {
+            nextSib.style.marginTop = "0px";
+        }
+    } else {
+        element.classList.remove(domConfig.dNone);
+        if (nextSib) {
+            nextSib.style.removeProperty("margin-top");
+        }
     }
 }

@@ -1,5 +1,0 @@
-export * as globals from "./config/globals.js"
-export * as utils from "./utils/utils.js"
-export * as api from "./services/api.js"
-export * as domConfig from "./config/domConfig.js"
-export * as anim from "./app/anim.js"
