@@ -13,8 +13,11 @@
             rel="stylesheet"
         />
         <script src="https://cdn.jsdelivr.net/npm/axios@latest/dist/axios.min.js"></script>
-        <script type="module" src="./assets/js/app/main.js"></script>
-        <script type="module" src="./assets/js/app/mediaQuery.js"></script>
+        <script type="module" src="./assets/javascript/app/index.js"></script>
+        <script
+            src="./assets/javascript/app/mediaquery.js"
+            defer
+        ></script>
         <link rel="stylesheet" href="./assets/css/utilities.css" />
         <link rel="stylesheet" href="./assets/css/style.css" />
         <link rel="stylesheet" href="./assets/css/loader.css" />
@@ -39,11 +42,11 @@
         </button>
         <div class="add-remove-wrapper d-flex flex-col">
             <!-- ADD NOTE BUTTON -->
-             <button id="add-btn">Aggiungi una polaroid!</button>
-             <!-- ESCAPE REMOVE MODE BUTTON -->
-             <button id="escape-remove-btn" class="d-none">Ho finito!</button>
-             <!-- REMOVE NOTE BUTTON -->
-             <button id="remove-btn">Rimuovi una polaroid!</button>
+            <button id="add-btn">Aggiungi una polaroid!</button>
+            <!-- ESCAPE REMOVE MODE BUTTON -->
+            <button id="escape-remove-btn" class="d-none">Ho finito!</button>
+            <!-- REMOVE NOTE BUTTON -->
+            <button id="remove-btn">Rimuovi una polaroid!</button>
         </div>
         <!-- LOADER -->
         <div class="loader active"></div>
