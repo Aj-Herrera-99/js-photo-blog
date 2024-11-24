@@ -1,5 +1,5 @@
 import * as dom from "../config/domElements.js";
-import { triggerModalWindow } from "./operation.js";
+import { dataSaved } from "../config/globals.js";
 
 export function card({ albumId, id, title, url }) {
     return `<figure class="note d-flex flex-wrap" id="${id}" albumid="${albumId}">
@@ -9,19 +9,13 @@ export function card({ albumId, id, title, url }) {
                 </figure>   `;
 }
 
-
-export function handleFocus(e) {
-    // il target cerca l elemento .note piu vicino ( se ce )
-    let note = e.target.closest(dom.noteClass);
-    if (!note) return;
-    if (!this.contains(note)) return;
-    note.scrollIntoView();
+export function focusNote(target) {
     // escape modal btn click event
     const popupModalBtn = document.getElementById(dom.popupModalBtnId);
     // invoco funzione che gestisce la finestra modale prendendo
     // come target note
     // se il ritorno è true (apro modale), aggiungo ascoltatori
-    if (triggerModalWindow(note)) {
+    if (triggerModalWindow(target)) {
         popupModalBtn.addEventListener("click", handleEscapeModal);
         window.addEventListener("keyup", handleEscapeModal);
     }
@@ -30,6 +24,18 @@ export function handleFocus(e) {
         popupModalBtn.removeEventListener("click", handleEscapeModal);
         window.removeEventListener("keyup", handleEscapeModal);
     }
+}
+
+export function removeNote(target) {
+    const indexElRemove = dataSaved.findIndex(
+        (el) =>
+            el.albumId == target.getAttribute("albumid") && el.id == target.id
+    );
+    if (indexElRemove !== -1) {
+        dataSaved.splice(indexElRemove, 1);
+    }
+    console.log(dataSaved);
+    target.remove();
 }
 
 function handleEscapeModal(e) {
@@ -46,3 +52,61 @@ function handleEscapeModal(e) {
         }
     }
 }
+
+const triggerModalWindow = (() => {
+    // console.log("funzione esterna");
+    let isModal = false;
+    const popupModalBtn = document.getElementById(dom.popupModalBtnId);
+    return (target) => {
+        // console.log("closure");
+        // seleziono pin e figcaption della note target
+        const targetPin = target.querySelector(dom.pinClass);
+        const targetFigcaption = target.querySelector(dom.figcaptionTag);
+        // se non ho la modale aperta allora aprila
+        if (!isModal) {
+            isModal = true;
+            popupAnim(popupModalBtn, isModal);
+            // aggiungo le classi in funzione della finestra modale
+            document.body.classList.add(dom.layover);
+            target.classList.add(dom.modal);
+            // in modale, faccio scomparire il pin e figcaption
+            // e la cornice (il parent)
+            target.classList.add(dom.hideParent);
+            targetPin.classList.add(dom.dNone);
+            targetFigcaption.classList.add(dom.dNone);
+            return isModal;
+        }
+        // se ho una modale aperta allora chiudila
+        else {
+            isModal = false;
+            // console.log("Modal off");
+            popupAnim(popupModalBtn, isModal);
+            // rimuovo le classi in funzione della finestra modale
+            document.body.classList.remove(dom.layover);
+            target.classList.remove(dom.modal);
+            // se non ho la modale, faccio riapparire pin e figcaption e la cornice
+            target.classList.remove(dom.hideParent);
+            targetPin.classList.remove(dom.dNone);
+            targetFigcaption.classList.remove(dom.dNone);
+            return isModal;
+        }
+    };
+})();
+
+const popupAnim = (() => {
+    let escTimeout;
+    return (popup, makeVisible) => {
+        if (makeVisible) {
+            // popup message
+            popup.classList.add(dom.active);
+            // dopo tot ms, il message scompare
+            escTimeout = setTimeout(() => {
+                popup.classList.remove(dom.active);
+            }, 2000);
+        } else {
+            // rimuovo (usando una classe) il message a tempo zero
+            clearTimeout(escTimeout);
+            popup.classList.remove(dom.active);
+        }
+    };
+})();
