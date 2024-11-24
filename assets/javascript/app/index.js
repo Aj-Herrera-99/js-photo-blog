@@ -1,9 +1,9 @@
 import * as dom from "../config/domElements.js";
-import { _RESOURCE, _URL, _PARAMS, dataSaved } from "../config/globals.js";
-import { getData } from "../components/api.js";
-import { card, focusNote, removeNote } from "../components/card.js";
-import { addNewNote, remModeAnim } from "../components/button.js";
-import { popupAnim } from "../utilities/utilities.js";
+import * as glob from "../config/globals.js";
+import * as api from "../components/api.js";
+import * as card from "../components/card.js";
+import * as btn from "../components/button.js";
+import * as utils from "../utilities/utilities.js";
 
 // modalita remove, default false
 let remMode = false;
@@ -15,10 +15,12 @@ let modalMode = false;
 (async function () {
     // dati presi da una chiamata ajax
 
-    let myData = await getData(_URL + _RESOURCE, _PARAMS, dataSaved);
-    let template = await myData.map((data) =>
-        card({ ...data }, dom.$notesWrapper)
+    let myData = await api.getData(
+        glob._URL + glob._RESOURCE,
+        glob._PARAMS,
+        glob.dataSaved
     );
+    let template = await myData.map((data) => card.buildNoteFrom({ ...data }));
     dom.$notesWrapper.insertAdjacentHTML("beforeend", template.join(""));
     // loader animation
     document.body.classList.remove(dom.layover);
@@ -36,28 +38,28 @@ dom.$main.addEventListener("click", function (e) {
             modalModeAnim(note);
         } else {
             // se remMode è attivo, rimuovi card
-            removeNote(note);
+            card.removeNote(note);
         }
     }
     // se target è add btn fai questo
     if (e.target.id === dom.addBtnId) {
         console.log("add btn");
         // aggiungi note
-        addNewNote();
+        btn.addNewNote();
     }
     // se target è remove btn fai questo
     if (e.target.id === dom.removeBtnId) {
         console.log("remove btn");
         // attiva remMode
         remMode = !remMode;
-        remModeAnim(remMode);
+        btn.remModeAnim(remMode);
     }
     // se target è escRemove btn fai questo
     if (e.target.id === dom.escRemoveBtnId) {
         console.log("escRemove btn");
         // disattiva remMode
         remMode = !remMode;
-        remModeAnim(remMode);
+        btn.remModeAnim(remMode);
     }
     return;
 });
@@ -78,6 +80,6 @@ window.addEventListener("keyup", function (e) {
 
 function modalModeAnim(targetFocused) {
     modalMode = !modalMode;
-    focusNote(targetFocused);
-    popupAnim(dom.$popupModalBtn, modalMode);
+    card.focusNote(targetFocused);
+    utils.popupAnim(dom.$popupModalBtn, modalMode);
 }

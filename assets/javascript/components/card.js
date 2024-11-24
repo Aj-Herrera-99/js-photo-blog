@@ -1,7 +1,7 @@
 import * as dom from "../config/domElements.js";
-import { dataSaved } from "../config/globals.js";
+import * as glob from "../config/globals.js";
 
-export function card({ albumId, id, title, url }) {
+export function buildNoteFrom({ albumId, id, title, url }) {
     return `<figure class="note d-flex flex-wrap" id="${id}" albumid="${albumId}">
                     <div class="pin"><img src="./assets/img/pin.svg" alt="pin"></div>
                     <img class="note-image" src="${url}" alt="img" loading="lazy">
@@ -19,13 +19,13 @@ export function focusNote(target) {
 }
 
 export function removeNote(target) {
-    const indexElRemove = dataSaved.findIndex(
+    const indexElRemove = glob.dataSaved.findIndex(
         (el) =>
             el.albumId == target.getAttribute("albumid") && el.id == target.id
     );
     if (indexElRemove !== -1) {
-        dataSaved.splice(indexElRemove, 1);
+        glob.dataSaved.splice(indexElRemove, 1);
     }
-    console.log(dataSaved);
+    console.log(glob.dataSaved);
     target.remove();
 }
