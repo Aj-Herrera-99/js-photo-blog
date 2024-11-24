@@ -1,7 +1,6 @@
 import * as dom from "../config/domElements.js";
 import { card } from "./card.js";
 import { getData } from "./api.js";
-// import { handleFocus } from "./card.js";
 import { getRndInteger as random } from "../utilities/utilities.js";
 import { _RESOURCE, _URL, dataSaved } from "../config/globals.js";
 

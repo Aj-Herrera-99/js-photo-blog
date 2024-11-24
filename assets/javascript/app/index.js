@@ -3,9 +3,12 @@ import { _RESOURCE, _URL, _PARAMS, dataSaved } from "../config/globals.js";
 import { getData } from "../components/api.js";
 import { card, focusNote, removeNote } from "../components/card.js";
 import { addNewNote, remModeAnim } from "../components/button.js";
+import { popupAnim } from "../utilities/utilities.js";
 
 // modalita remove, default false
 let remMode = false;
+// modalita finestra, default false
+let modalMode = false;
 
 // Immediately Invoked Function Expressions (IIFE) to execute async await
 // Caricamento elementi starter della pagina
@@ -26,7 +29,7 @@ dom.$main.addEventListener("click", function (e) {
         let note = e.target.closest(dom.noteClass);
         // fai focus sulla card se non e attivo remMode
         if (!remMode) {
-            focusNote(note);
+            modalModeAnim(note);
         } else {
             // se remMode è attivo, rimuovi card
             removeNote(note);
@@ -42,15 +45,35 @@ dom.$main.addEventListener("click", function (e) {
     if (e.target.id === dom.removeBtnId) {
         console.log("remove btn");
         // attiva remMode
-        remMode = true;
+        remMode = !remMode;
         remModeAnim(remMode);
     }
     // se target è escRemove btn fai questo
     if (e.target.id === dom.escRemoveBtnId) {
         console.log("escRemove btn");
         // disattiva remMode
-        remMode = false;
+        remMode = !remMode;
         remModeAnim(remMode);
     }
     return;
 });
+
+// popup modal click event
+dom.$popupModalBtn.addEventListener("click", function (e) {
+    console.log("popupModal btn");
+    modalModeAnim(document.querySelector("." + dom.modal));
+});
+
+// window keyup event (only for ESC)
+window.addEventListener("keyup", function (e) {
+    if (e.key === "Escape" && modalMode) {
+        console.log("Escape key");
+        modalModeAnim(document.querySelector("." + dom.modal));
+    }
+});
+
+function modalModeAnim(targetFocused) {
+    modalMode = !modalMode;
+    focusNote(targetFocused);
+    popupAnim(dom.$popupModalBtn, modalMode);
+}

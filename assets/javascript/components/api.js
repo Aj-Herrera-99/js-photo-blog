@@ -1,7 +1,6 @@
 import * as dom from "../config/domElements.js";
 import { _MAX_OBJECTS } from "../config/globals.js";
 
-
 export async function getData(completeUrl, params, saving) {
     try {
         const res = await axios.get(completeUrl, { params });
