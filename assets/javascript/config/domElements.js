@@ -26,3 +26,4 @@ export const $notesWrapper = document.querySelector(notesWrapperClass);
 export const $addBtn = document.getElementById(addBtnId);
 export const $removeBtn = document.getElementById(removeBtnId);
 export const $escRemoveBtn = document.getElementById(escRemoveBtnId);
+export const $popupModalBtn = document.getElementById(popupModalBtnId);

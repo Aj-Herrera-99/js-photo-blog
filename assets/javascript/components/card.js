@@ -10,18 +10,16 @@ export function card({ albumId, id, title, url }) {
 }
 
 export function focusNote(target) {
-    // escape modal btn click event
-    const popupModalBtn = document.getElementById(dom.popupModalBtnId);
     // invoco funzione che gestisce la finestra modale prendendo
     // come target note
     // se il ritorno è true (apro modale), aggiungo ascoltatori
     if (triggerModalWindow(target)) {
-        popupModalBtn.addEventListener("click", handleEscapeModal);
+        dom.$popupModalBtn.addEventListener("click", handleEscapeModal);
         window.addEventListener("keyup", handleEscapeModal);
     }
     // se il ritorno è false (chiudo modale), rimuovo ascoltatori
     else {
-        popupModalBtn.removeEventListener("click", handleEscapeModal);
+        dom.$popupModalBtn.removeEventListener("click", handleEscapeModal);
         window.removeEventListener("keyup", handleEscapeModal);
     }
 }
@@ -39,15 +37,13 @@ export function removeNote(target) {
 }
 
 function handleEscapeModal(e) {
-    console.log("test");
-    const popupModalBtn = document.getElementById(dom.popupModalBtnId);
-    if (e.currentTarget === popupModalBtn || e.key === "Escape") {
+    if (e.currentTarget === dom.$popupModalBtn || e.key === "Escape") {
         console.log("test");
         const modalNote = document.querySelector(`.${dom.modal}`);
         if (!modalNote) return;
         if (!document.contains(modalNote)) return;
         if (!triggerModalWindow(modalNote)) {
-            popupModalBtn.removeEventListener("click", handleEscapeModal);
+            dom.$popupModalBtn.removeEventListener("click", handleEscapeModal);
             window.removeEventListener("keyup", handleEscapeModal);
         }
     }
@@ -56,7 +52,6 @@ function handleEscapeModal(e) {
 const triggerModalWindow = (() => {
     // console.log("funzione esterna");
     let isModal = false;
-    const popupModalBtn = document.getElementById(dom.popupModalBtnId);
     return (target) => {
         // console.log("closure");
         // seleziono pin e figcaption della note target
@@ -65,7 +60,7 @@ const triggerModalWindow = (() => {
         // se non ho la modale aperta allora aprila
         if (!isModal) {
             isModal = true;
-            popupAnim(popupModalBtn, isModal);
+            popupAnim(dom.$popupModalBtn, isModal);
             // aggiungo le classi in funzione della finestra modale
             document.body.classList.add(dom.layover);
             target.classList.add(dom.modal);
@@ -80,7 +75,7 @@ const triggerModalWindow = (() => {
         else {
             isModal = false;
             // console.log("Modal off");
-            popupAnim(popupModalBtn, isModal);
+            popupAnim(dom.$popupModalBtn, isModal);
             // rimuovo le classi in funzione della finestra modale
             document.body.classList.remove(dom.layover);
             target.classList.remove(dom.modal);

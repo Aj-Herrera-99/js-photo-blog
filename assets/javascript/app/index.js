@@ -4,9 +4,11 @@ import { getData } from "../components/api.js";
 import { card, focusNote, removeNote } from "../components/card.js";
 import { addNewNote, remModeAnim } from "../components/button.js";
 
+// modalita remove, default false
 let remMode = false;
 
 // Immediately Invoked Function Expressions (IIFE) to execute async await
+// Caricamento elementi starter della pagina
 (async function () {
     // dati presi da una chiamata ajax
     let myData = await getData(_URL + _RESOURCE, _PARAMS, dataSaved);
@@ -16,6 +18,7 @@ let remMode = false;
     dom.$notesWrapper.insertAdjacentHTML("beforeend", template.join(""));
 })();
 
+// Event delegation a main riguardo il click
 dom.$main.addEventListener("click", function (e) {
     // se target è la note fai questo
     if (e.target.closest(dom.noteClass)) {
