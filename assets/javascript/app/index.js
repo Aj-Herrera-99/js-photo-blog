@@ -14,11 +14,15 @@ let modalMode = false;
 // Caricamento elementi starter della pagina
 (async function () {
     // dati presi da una chiamata ajax
+
     let myData = await getData(_URL + _RESOURCE, _PARAMS, dataSaved);
     let template = await myData.map((data) =>
         card({ ...data }, dom.$notesWrapper)
     );
     dom.$notesWrapper.insertAdjacentHTML("beforeend", template.join(""));
+    // loader animation
+    document.body.classList.remove(dom.layover);
+    document.querySelector(dom.loaderClass).classList.remove(dom.active);
 })();
 
 // Event delegation a main riguardo il click

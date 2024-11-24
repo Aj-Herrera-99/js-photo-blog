@@ -1,4 +1,3 @@
-import * as dom from "../config/domElements.js";
 import { _MAX_OBJECTS } from "../config/globals.js";
 
 export async function getData(completeUrl, params, saving) {
@@ -12,15 +11,9 @@ export async function getData(completeUrl, params, saving) {
         const data = await res.data;
         data.forEach((data) => saving.push(data));
         console.log(saving);
-        // loader animation
-        document.body.classList.remove(dom.layover);
-        document.querySelector(dom.loaderClass).classList.remove(dom.active);
         return data;
     } catch (e) {
         console.error(e);
-        // loader animation
-        document.body.classList.remove(dom.layover);
-        document.querySelector(dom.loaderClass).classList.remove(dom.active);
         // return an empty array
         return [];
     }
