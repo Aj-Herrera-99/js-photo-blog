@@ -59,13 +59,9 @@ main {
     padding: 80px;
 }
 
-.notes-wrapper {
-    width: 100%;
-}
-
 .note {
     background: #ffffff;
-    /* 20px = 10px + 10px di .box margin */
+    /* 20px = 10px + 10px di .note margin */
     width: calc(100% - 20px);
     aspect-ratio: 7/9;
     margin-inline: var(--note-margin-inline);

@@ -20,8 +20,8 @@ let modalMode = false;
         glob._PARAMS,
         glob.dataSaved
     );
-    let template = await myData.map((data) => card.buildNoteFrom({ ...data }));
-    dom.$notesWrapper.insertAdjacentHTML("beforeend", template.join(""));
+    let templates = await myData.map((data) => card.buildNoteFrom({ ...data }));
+    dom.$notesWrapper.insertAdjacentHTML("beforeend", templates.join(""));
     // loader animation
     document.body.classList.remove(dom.layover);
     document.querySelector(dom.loaderClass).classList.remove(dom.active);
